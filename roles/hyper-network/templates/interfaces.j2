@@ -1,0 +1,31 @@
+# This file is managed by ansible, don't make changes here - they will be overwritten.
+# Loopback device:
+auto lo
+iface lo inet loopback
+
+# device: eth0
+auto eth0
+iface eth0 inet static
+	address   {{network.own_v4.ip_addr}}
+	netmask   255.255.255.255
+	gateway   {{network.own_v4.gateway}}
+	pointopoint {{network.own_v4.gateway}}
+
+iface eth0 inet6 static
+	address {{network.own_v6.network | ipaddr("address")}}
+	netmask 128
+	gateway fe80::1
+
+# device: br0
+auto br0
+iface br0 inet static
+	address {{network.own_v4.ip_addr}}
+	netmask 255.255.255.255
+	bridge_stp off
+	bridge_ports none
+	bridge_fd 0
+	bridge_maxwait 0
+
+iface br0 inet6 static
+	address {{network.own_v6.network | ipaddr("address")}}
+	netmask {{network.own_v6.network | ipaddr("prefix")}}

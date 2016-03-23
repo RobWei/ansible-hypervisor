@@ -1,0 +1,9 @@
+---
+# Playbook zur Konfiguration der managed-vms
+
+- hosts: managed-vms 
+  remote_user: root
+  roles:
+    - { role: vm-network, tags: "vm-network"}
+    - { role: hostname, tags: "hostname"}
+    - { role: common, tags: "common"}

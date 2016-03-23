@@ -1,0 +1,30 @@
+# This file is managed by ansible, don't make changes here - they will be overwritten.
+{% set hypervisor = {'name': False} %}
+{% for host in groups['hypervisors'] %}
+{% for vm in hostvars[host].virtual_machines %}
+{% if vm.name == inventory_hostname %}
+{% if hypervisor.update({'name': host}) %} {% endif %}
+{% set hypervisor = host %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The eth0 network interface
+auto eth0
+iface eth0 inet static
+        address {{ansible_ssh_host}}
+        netmask 255.255.255.255
+        gateway {{hostvars[hypervisor.name].network.own_v4.ip_addr}}
+        pointopoint {{hostvars[hypervisor.name].network.own_v4.ip_addr}}
+
+iface eth0 inet6 static
+        address {{hostvars[hypervisor.name].network.own_v6.network | ipaddr(((server_id | string)[0] | int)*6 + server_id) | ipaddr('address')}}
+        gateway {{hostvars[hypervisor.name].network.own_v6.network | ipaddr('address')}}
+        netmask {{hostvars[hypervisor.name].network.own_v6.network | ipaddr('prefix')}}

@@ -1,0 +1,19 @@
+
+     ///////  ///////  ////   ////    /////////
+    //       //       // //  // //     ///
+   ///////  ///////  //  // //  //       ////
+  //       //       //    ///   //         ///
+ //       //       //     //    //   /////////
+ 
+ Freifunk Münsterland 
+ 
+ Server:  {{ ansible_hostname }}
+ Besitzer: {{ server_besitzer }}
+
+ Öffentliche IPs: {{ansible_eth0.ipv4.address}} / {{ansible_eth0.ipv6[0].address}}
+{% if 'backbone' not in group_names and 'hypervisors' not in group_names  and 'managed-vms' not in group_names%}
+ Freifunk IP:     {{ff_network.v4_network | ipaddr(server_id) | ipaddr('address') }} / {{ff_network.v6_network | ipaddr(server_id) | ipaddr('address') }}
+{% endif %}
+
+ Domäne: {{ group_names | last }}
+

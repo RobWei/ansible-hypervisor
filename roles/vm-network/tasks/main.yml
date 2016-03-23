@@ -1,0 +1,9 @@
+---
+# Vorbereitung für die Virtualisierung mit libvirt/KVM
+- name: configure /etc/network/interfaces/
+  template: src="interfaces.j2" dest="/etc/network/interfaces"
+  notify:
+    - restart networking
+
+- name: Execute all triggered handlers
+  meta: flush_handlers

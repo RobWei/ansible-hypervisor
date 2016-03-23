@@ -1,0 +1,25 @@
+# This file is managed by ansible, don't make changes here - they will be overwritten.
+log syslog all;
+router id {{network.own_v4.ip_addr}};
+
+protocol kernel 'p-kernel'{
+  learn;
+  persist;
+  export all;
+  import all;
+}
+
+protocol device 'p-device'{
+};
+
+protocol direct 'p-direct'{
+  export all;
+  interface "*";
+};
+
+protocol static 'p-static-vm'{
+  export all;
+{% for host in virtual_machines %}
+  route {{hostvars[host.name].ansible_ssh_host}}/32 via "br0";
+{% endfor %}
+};

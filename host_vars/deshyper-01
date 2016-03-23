@@ -1,0 +1,49 @@
+server_id: 2
+
+server_besitzer: "Simon Wüllhorst / descilla"
+
+network:
+  own_v4: 
+    ip_addr: "5.9.86.151"
+    gateway: "5.9.86.129"
+  own_v6: 
+    network: "2a01:4f8:162:10d2::2/64"
+
+storage_shemes:
+- name: ffms
+  location: "/home/libvirt/images/ffms"
+  started: True
+  autostart: True
+
+network_shemes:
+- name: ipv4-nat
+  started: True
+  autostart: True
+  type: v4nat
+  bridge_name: virbr1
+  v6:
+    network: "2a01:4f8:162:10d2::2/64"
+  v4:
+    network: 192.168.10.0/24
+    dhcp: True
+- name: host-bridge
+  started: True
+  autostart: True
+  type: bridge
+  bridge_device: br0
+  bridge_name: vnet0
+
+virtual_machines:
+- name: "desvm-01"
+- name: "desvm-02"
+- name: "desvm-03"
+- name: "desvm-04"
+- name: "desvm-05"
+
+virt_installer:
+  debian_jessie_x64:
+    distribution: debian
+    release: jessie
+    net_installer: http://ftp.de.debian.org/debian/dists/Debian8.3/main/installer-amd64/
+    architecture: amd64
+

@@ -1,0 +1,26 @@
+---
+# Vorbereitung für die Virtualisierung mit libvirt/KVM
+- name: install bridge-utils
+  apt:
+    pkg: "bridge-utils"
+    update_cache: yes
+    state: installed
+
+- name: IPv4 Paketweiterleitung aktivieren
+  sysctl: name="net.ipv4.conf.all.forwarding" value=1 sysctl_set=yes state=present reload=yes
+
+- name: ICMPv4 Weiterleitung der VMs zum Gateway unterbinden
+  sysctl: name="net.ipv4.conf.eth0.send_redirects" value=0 sysctl_set=yes state=present reload=yes
+
+- name: IPv6 Paketweiterleitung aktivieren
+  sysctl: name="net.ipv6.conf.all.forwarding" value=1 sysctl_set=yes state=present reload=yes
+
+#TODO: Don't restart network when VMs are running
+- name: configure /etc/network/interfaces/
+  template: src="interfaces.j2" dest="/etc/network/interfaces"
+  notify:
+    - restart networking
+
+- name: Execute all triggered handlers
+  meta: flush_handlers
+

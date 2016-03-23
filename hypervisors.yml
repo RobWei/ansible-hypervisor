@@ -1,0 +1,12 @@
+---
+# Playbook zur Konfiguration der Hypervisor-Server
+
+- hosts: hypervisors 
+  remote_user: root
+  roles:
+    - { role: hostname, tags: "hostname"}
+    - { role: common, tags: "common"}
+    - { role: hyper-network, tags: "hyper-network"}
+    - { role: hyper-bird, tags: "hyper-bird"}
+    - { role: configure-libvirt, tags: "configure-libvirt"}
+    - { role: manage-vms, tags: "manage-vms"}

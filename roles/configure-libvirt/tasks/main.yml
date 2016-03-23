@@ -1,0 +1,101 @@
+---
+#Vorbereitung für die Virtualisierung mit libvirt/KVM
+- name: install virtualizations packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: installed
+  with_items:
+    - qemu-kvm
+    - libvirt-bin
+    - virt-manager
+    - xauth
+    - python-lxml
+
+
+# Ansible virt_pool docs see here: https://docs.ansible.com/ansible/virt_pool_module.html
+# libvirt storage xml scheme see here: https://libvirt.org/storage.html
+
+- name: Gathering libvirt storage informations
+  virt_pool: command=info
+  register: storage_pools
+
+
+- name: Create storage pool directories
+  file: path="{{item.location}}" state=directory mode=0755
+  with_items: "{{storage_shemes}}"
+
+
+- name: Define storage pools
+  virt_pool: command=define name={{item.name}} xml='{{ lookup("template", "storage.xml.j2") }}'
+  with_items: "{{storage_shemes}}"
+
+
+- name: Build storage pools if not exists
+  virt_pool: command=build name={{item.name}}
+  when: item.name not in storage_pools.pools
+  with_items: "{{storage_shemes}}"
+
+
+- name: Start storage pools which are set to be started and not running
+  virt_pool: state=active name={{item.name}}
+  when: item.started == True
+  with_items: "{{storage_shemes}}"
+
+
+- name: Stop storage pools which are not set to be started and running
+  virt_pool: state=inactive name={{item.name}}
+  when: item.started != True
+  with_items: "{{storage_shemes}}"
+
+
+- name: Enable autostart for storage pools if enabled in configuration
+  virt_pool: autostart=yes name={{item.name}}
+  when: item.autostart == True
+  with_items: "{{storage_shemes}}"
+
+
+- name: Disable autostart for storage pools if disabled in configuration
+  virt_pool: autostart=no name={{item.name}}
+  when: item.autostart != True
+  with_items: "{{storage_shemes}}"
+
+
+# Ansible virt_net docs see here: https://docs.ansible.com/ansible/virt_net_module.html
+# libvirt network xml scheme see here: https://libvirt.org/formatnetwork.html
+
+
+- name: Gathering libvirt network informations
+  virt_net: command=info
+  with_items: libvirt_uris
+  register: networks
+
+
+- name: Define networks
+  virt_net: command=define name=br_nat xml='{{ lookup("template", "network.xml.j2") }}'
+  when: "'type' in item and item.name not in networks.results[0].networks"
+  with_items: "{{network_shemes}}"
+
+
+- name: Start networks which are set to be started and not running
+  virt_net: state=active name={{item.name}}
+  when: item.started == True
+  with_items: "{{network_shemes}}"
+
+
+- name: Stop networks which are not set to be started and running
+  virt_net: state=inactive name={{item.name}}
+  when: item.started != True
+  with_items: "{{network_shemes}}"
+
+
+- name: Enable autostart for networks if enabled in configuration
+  virt_net: autostart=yes name={{item.name}}
+  when: item.autostart == True
+  with_items: "{{network_shemes}}"
+
+
+- name: Disable autostart for networks if disabled in configuration
+  virt_net: autostart=no name={{item.name}}
+  when: item.autostart != True
+  with_items: "{{network_shemes}}"

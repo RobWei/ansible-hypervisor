@@ -1,0 +1,4 @@
+#using shell instead of ansible module, because ansible isn't perfect in handling with systemd atm
+---
+- name: restart networking
+  shell: systemctl restart networking

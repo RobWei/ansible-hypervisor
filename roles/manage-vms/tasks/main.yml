@@ -1,0 +1,69 @@
+---
+
+
+- include_vars: passwords.yml
+
+# Manage virtual Machines
+- name: Gathering libvirt VM informations
+  virt: command=info
+  register: vm_info
+
+- debug: var=vm_info
+
+- name: Get list of defined vms
+  virt: command=list_vms
+  register: vm_vms
+
+- debug: var=vm_vms
+
+- name: Gathering libvirt storage informations
+  virt_pool: command=info
+  register: storage_pools
+
+- debug: var=storage_pools
+
+- name: Create preseed directory
+  file: path="/opt/installer/" state=directory mode=0755
+
+
+- name: Create preseed vm directory
+  file: path="/opt/installer/{{item.name}}/" state=directory mode=0755
+  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info"
+  with_items: "{{virtual_machines}}"
+
+- name: Create preseed files
+  template: src=preseed.cfg.j2 dest="/opt/installer/{{item.name}}/preseed.cfg"
+  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info"
+  with_items: "{{virtual_machines}}"
+
+# note: creates and when as double check to prevent accidential recreation of still created vms
+- name: Create VM with virt-inst
+  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --vncport=590{{hostvars[item.name].server_id}} --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --cpuset=auto --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical\""
+  args:
+      creates: "{{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw"
+  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info"
+  with_items: "{{virtual_machines}}"
+
+
+- name: Start vms which are set to be started and not running
+  virt: state=running name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.started == True
+  with_items: "{{virtual_machines}}"
+
+
+- name: Stop vms which are not set to be started and running
+  virt: state=shutdown name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.started != True
+  with_items: "{{virtual_machines}}"
+
+
+- name: Enable autostart for vms if enabled in configuration
+  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.autostart == True
+  with_items: "{{virtual_machines}}"
+
+
+- name: Disable autostart for vms if disabled in configuration
+  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.autostart != True
+  with_items: "{{virtual_machines}}"

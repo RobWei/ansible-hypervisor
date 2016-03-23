@@ -1,0 +1,26 @@
+<!--
+WARNING: This file is managed by ansible, don't make changes here - they will be overwritten.
+-->
+{% if item.type == "v4nat" %}
+<network>
+  <name>{{item.name}}</name>
+  <bridge name="{{item.bridge_name}}" />
+  <forward mode="nat"/>
+{% if "v4" in item %}
+  <ip address="{{item.v4.network | ipaddr("1") | ipaddr("address")}}" netmask="{{item.v4.network | ipaddr("netmask")}}">
+    <dhcp>
+      <range start="{{item.v4.network | ipaddr("2") | ipaddr("address")}}" end="{{item.v4.network | ipaddr("-2") | ipaddr("address")}}" />
+    </dhcp>
+  </ip>
+{% endif %}
+{% if "v6" in item %}
+  <ip family="ipv6" address="{{item.v6.network | ipaddr("address")}}" prefix="{{item.v6.network | ipaddr("prefix")}}" />
+</network>
+{% endif %}
+{% elif item.type ==  "bridge" %}
+<network>
+  <name>{{item.name}}</name>
+  <forward mode="bridge"/>
+  <bridge name="{{item.bridge_device}}"/>
+</network>
+{% endif %}
