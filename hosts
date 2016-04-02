@@ -1,0 +1,9 @@
+[hypervisors]
+deshyper-01                     ansible_ssh_host=5.9.86.151
+
+[managed-vms]
+desvm-01                        ansible_ssh_host=5.9.180.40
+desvm-02                        ansible_ssh_host=5.9.180.41
+desvm-03                        ansible_ssh_host=5.9.180.42
+desvm-04                        ansible_ssh_host=5.9.180.43
+des1				ansible_ssh_host=5.9.86.144
