@@ -53,6 +53,8 @@
     - molly-guard
     - iperf
     - postfix
+    - chkconfig
+    - logwatch
 
 - name: add sshkeys for server
   authorized_key: 
@@ -67,5 +69,46 @@
 
 - locale_gen: name=de_DE.UTF-8 state=present
 
-- name: status.pl nach /root kopieren
-  copy: src=status.pl dest=/root/status.pl owner=root group=root mode=0755
+- name: Disable ssh authentication with password for all users
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PasswordAuthentication " line="PasswordAuthentication no"
+  notify:
+    - reload sshd
+
+- name: Permit root login only with pub-/priv-key auth
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PermitRootLogin " line="PermitRootLogin without-password"
+  notify:
+    - reload sshd
+
+- name: Let PAM Module (in general) anabled
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?UsePAM " line="UsePAM yes"
+  notify:
+    - reload sshd
+
+- name: Disable PAM Auth
+  lineinfile: dest=/etc/pam.d/sshd regexp="^auth " line="auth required pam_deny.so"
+  notify:
+    - reload sshd
+
+- name: Disable ChallengeResponseAuthentication
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?ChallengeResponseAuthentication " line="ChallengeResponseAuthentication no"
+  notify:
+    - reload sshd
+
+- name: Let postfix only listen on localhost
+  lineinfile: dest=/etc/postfix/main.cf regexp="^#?inet_interfaces " line="inet_interfaces = 127.0.0.1 [::1]"
+  notify:
+    - restart postfix
+
+
+- name: remove unneeded rpc/nfc related packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: absent
+    purge: yes
+  with_items:
+    - rpcbind
+    - nfs-kernel-server
+    - nfs-common
+    - portmap
+
