@@ -35,16 +35,16 @@ network_shemes:
 
 virtual_machines:
 - name: "des1"
-- name: "desvm-01"
-- name: "desvm-02"
-- name: "desvm-03"
-- name: "desvm-04"
+- name: "des2"
+- name: "des3"
+- name: "des4"
+- name: "des5"
 #- name: "desvm-05"
 
 virt_installer:
   debian_jessie_x64:
     distribution: debian
     release: jessie
-    net_installer: http://ftp.de.debian.org/debian/dists/Debian8.3/main/installer-amd64/
+    net_installer: http://ftp.de.debian.org/debian/dists/Debian8.4/main/installer-amd64/
     architecture: amd64
 
