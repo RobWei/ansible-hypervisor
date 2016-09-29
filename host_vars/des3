@@ -4,7 +4,7 @@ server_besitzer: "Simon Wüllhorst / descilla"
 
 vm_config:
   installer:
-    name: debian_jessie_x64
+    name: ubuntu_xenial_x64
   cpus: 4
   ram: 4096
   disk: 200
@@ -12,3 +12,6 @@ vm_config:
   started: True
   autostart: True
   network_if: br0
+
+administrators:
+  - "descilla"

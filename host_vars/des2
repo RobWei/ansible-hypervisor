@@ -12,3 +12,6 @@ vm_config:
   started: True
   autostart: True
   network_if: br0
+
+administrators:
+  - "descilla"
