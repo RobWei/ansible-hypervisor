@@ -37,11 +37,18 @@
   with_items: "{{virtual_machines}}"
 
 # note: creates and when as double check to prevent accidential recreation of still created vms
-- name: Create VM with virt-inst
-  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --vncport=59{{hostvars[item.name].server_id + 1}} --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --cpuset=auto --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical\""
+- name: Create VM with virt-inst (Debian)
+  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --cpuset=auto --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == 'ubuntu' and virt_installer[hostvars[item.name].vm_config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %}\""
   args:
       creates: "{{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw"
-  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info"
+  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info and ansible_distribution == 'Debian'"
+  with_items: "{{virtual_machines}}"
+
+- name: Create VM with virt-inst (Ubuntu)
+  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == 'ubuntu' and virt_installer[hostvars[item.name].vm_config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %}\""
+  args:
+      creates: "{{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw"
+  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info and ansible_distribution == 'Ubuntu'"
   with_items: "{{virtual_machines}}"
 
 

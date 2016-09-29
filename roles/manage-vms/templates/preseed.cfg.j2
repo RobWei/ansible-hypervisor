@@ -29,7 +29,10 @@ d-i console-setup/variantcode string nodeadkeys
 # netcfg will choose an interface that has link if possible. This makes it
 # skip displaying a list if there is more than one interface.
 d-i netcfg/choose_interface select auto
-
+{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" and virt_installer[hostvars[item.name].vm_config.installer.name].release == "xenial" %}
+#--- re-enabling eth0 interface names for Ubuntu 16 LTS
+d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0
+{% endif %}
 # To pick a particular interface instead:
 #d-i netcfg/choose_interface select eth1
 
@@ -62,6 +65,7 @@ d-i netcfg/disable_autoconfig boolean true
 #d-i netcfg/get_nameservers string 192.168.1.1
 #d-i netcfg/confirm_static boolean true
 
+# dirty hack for p2p addresses (updated after installation)
 d-i netcfg/get_ipaddress string {{hostvars[item.name].ansible_ssh_host}}
 d-i netcfg/get_netmask string 255.255.0.0
 d-i netcfg/get_gateway string {{network.own_v4.ip_addr}}
@@ -116,8 +120,23 @@ d-i netcfg/hostname string {{item.name}}
 ### Mirror settings
 # If you select ftp, the mirror/country string does not need to be set.
 d-i mirror/country string manual
+{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" %}
+{% if "hoster" in hostvars and hoster == "hetzner" %}
+d-i mirror/http/hostname string mirror.hetzner.de
+d-i mirror/http/directory string /ubuntu/packages
+{% else %}
+d-i mirror/http/hostname string de.archive.ubuntu.com
+d-i mirror/http/directory string /ubuntu
+{% endif %}
+{% else %}
+{% if "hoster" in hostvars and hoster == "hetzner" %}
+d-i mirror/http/hostname string mirror.hetzner.de
+d-i mirror/http/directory string /debian/packages
+{% else %}
 d-i mirror/http/hostname string ftp.de.debian.org
 d-i mirror/http/directory string /debian
+{% endif %}
+{% endif %}
 d-i mirror/codename string {{virt_installer[hostvars[item.name].vm_config.installer.name].release}}
 d-i mirror/suite string {{virt_installer[hostvars[item.name].vm_config.installer.name].release}}
 d-i mirror/udeb/suite string {{virt_installer[hostvars[item.name].vm_config.installer.name].release}}
@@ -187,7 +206,12 @@ d-i clock-setup/utc boolean true
 # /usr/share/zoneinfo/ for valid values.
 d-i time/zone string Europe/Berlin
 # Controls whether to use NTP to set the clock during the install
+
+{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" %}
+d-i clock-setup/ntp boolean false
+{% else %}
 d-i clock-setup/ntp boolean true
+{% endif %}
 # NTP server to use. The default is almost always fine here.
 #d-i clock-setup/ntp-server string ntp.example.com
 
@@ -359,7 +383,13 @@ d-i partman/confirm_nooverwrite boolean true
 
 ### Package selection
 #tasksel tasksel/first multiselect standard, web-server
-tasksel tasksel/first multiselect ssh-server standard
+{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" %}
+tasksel tasksel/first multiselect ubuntu-standard openssh-server
+d-i pkgsel/include string python man-db
+{% else %}
+tasksel tasksel/first multiselect standard ssh-server
+{% endif %}
+
 # If the desktop task is selected, install the kde and xfce desktops
 # instead of the default gnome desktop.
 #tasksel tasksel/desktop multiselect kde, xfce

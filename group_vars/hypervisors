@@ -4,3 +4,15 @@ administrators:
 
 admin_contact:
   email: "mail@simon-wuellhorst.de"
+
+virt_installer:
+  debian_jessie_x64:
+    distribution: debian
+    release: jessie
+    net_installer: http://ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
+    architecture: amd64
+  ubuntu_xenial_x64:
+    distribution: ubuntu
+    release: xenial
+    net_installer: http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/
+    architecture: amd64

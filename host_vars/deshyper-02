@@ -42,10 +42,4 @@ virtual_machines:
 - name: "des2"
 - name: "des3"
 
-virt_installer:
-  debian_jessie_x64:
-    distribution: debian
-    release: jessie
-    net_installer: http://ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
-    architecture: amd64
-
+hoster: "hetzner"
