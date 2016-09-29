@@ -1,6 +1,5 @@
 [hypervisors]
 deshyper-02			ansible_ssh_host=148.251.45.18
-bezreg-srv			ansible_ssh_host=10.43.129.164
 
 [managed-vms]
 des1				ansible_ssh_host=148.251.45.45
