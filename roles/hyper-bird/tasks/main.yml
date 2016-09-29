@@ -2,10 +2,17 @@
 - name: Add repo key for bird
   apt_key: keyserver=keyserver.ubuntu.com id=AC0E47584A7A714D
 
-- name: Add repo for bird
+- name: Add repo for bird (Debian)
   apt_repository:
     repo: "deb http://bird.network.cz/debian/ {{ ansible_distribution_release }} main"
     state: present
+  when: ansible_distribution == "Debian"
+
+- name: Add repo for bird (Ubuntu)
+  apt_repository:
+    repo: "ppa:cz.nic-labs/bird"
+    state: present
+  when: ansible_distribution == "Ubuntu"
 
 - name: Install bird
   apt:
@@ -18,7 +25,7 @@
 
 - name: Set bird to atomatic start on system startup
   shell: systemctl enable bird.service
-  when: "apt_bird.changed and ansible_distribution_release == 'jessie'"
+  when: "apt_bird.changed and ansible_distribution_release == 'jessie' or ansible_distribution_release == 'xenial'"
 
 - name: configure bird.conf
   template: src=bird.conf.j2 dest=/etc/bird/bird.conf
