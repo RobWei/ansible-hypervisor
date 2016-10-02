@@ -1,0 +1,15 @@
+server_id: 171
+
+server_besitzer: "Remue"
+
+vm_config:
+  installer:
+    name: ubuntu_xenial_x64
+  cpus: 2
+  ram: 4096
+  disk: 100
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network_if: br0
+
