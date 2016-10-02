@@ -47,7 +47,9 @@ d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0
 
 # If you prefer to configure the network manually, uncomment this line and
 # the static network configuration below.
+{% if hostvars[item.name].vm_config.network_if == "br0" %}
 d-i netcfg/disable_autoconfig boolean true
+{% endif %}
 #d-i netcfg/disable_dhcp boolean true
 
 # If you want the preconfiguration file to work on systems both with and
@@ -66,12 +68,14 @@ d-i netcfg/disable_autoconfig boolean true
 #d-i netcfg/confirm_static boolean true
 
 # dirty hack for p2p addresses (updated after installation)
+{% if hostvars[item.name].vm_config.network_if == "br0" %}
 d-i netcfg/get_ipaddress string {{hostvars[item.name].ansible_ssh_host}}
 d-i netcfg/get_netmask string 255.255.0.0
 d-i netcfg/get_gateway string {{network.own_v4.ip_addr}}
 d-i netcfg/get_pointopoint string {{network.own_v4.ip_addr}}
 d-i netcfg/get_nameservers string 8.8.8.8
 d-i netcfg/confirm_static boolean true
+{% endif %}
 #
 # IPv6 example
 

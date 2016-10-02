@@ -15,8 +15,8 @@ WARNING: This file is managed by ansible, don't make changes here - they will be
 {% endif %}
 {% if "v6" in item %}
   <ip family="ipv6" address="{{item.v6.network | ipaddr("address")}}" prefix="{{item.v6.network | ipaddr("prefix")}}" />
-</network>
 {% endif %}
+</network>
 {% elif item.type ==  "bridge" %}
 <network>
   <name>{{item.name}}</name>
