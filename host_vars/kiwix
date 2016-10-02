@@ -1,0 +1,15 @@
+server_id: 45
+
+server_besitzer: "FFI"
+
+vm_config:
+  installer:
+    name: ubuntu_xenial_x64
+  cpus: 1
+  ram: 1024
+  disk: 50
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network_if: virbr1
+
