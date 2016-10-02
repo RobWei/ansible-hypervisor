@@ -33,5 +33,6 @@ network_shemes:
 
 virtual_machines:
 - name: "kiwix"
+- name: "dyndns"
 
 hoster: "hetzner"
