@@ -60,6 +60,9 @@
     - traceroute
 #    - postfix
     - logwatch
+    - ethtool
+    - irqbalance
+#    - netperf #nonfree
 
 - name: install common packages (Debian specific)
   apt:
