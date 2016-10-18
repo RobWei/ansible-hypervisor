@@ -32,6 +32,7 @@ network_shemes:
   bridge_name: vnet0
 
 virtual_machines:
+- name: "des1"
 - name: "kiwix"
 - name: "dyndns"
 

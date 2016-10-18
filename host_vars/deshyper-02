@@ -38,8 +38,6 @@ network_shemes:
   bridge_name: vnet0
 
 virtual_machines:
-- name: "des1"
 - name: "des2"
-- name: "des3"
 
 hoster: "hetzner"

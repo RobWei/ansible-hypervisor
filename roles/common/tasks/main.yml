@@ -52,13 +52,13 @@
     - host
     - apt-transport-https
     - etckeeper
-    - apticron
+#    - apticron
     - dwdiff
     - git
     - molly-guard
     - iperf
     - traceroute
-    - postfix
+#    - postfix
     - logwatch
 
 - name: install common packages (Debian specific)
@@ -77,9 +77,9 @@
   with_items: "{{ administrators }}"
   when: administrators
 
-- name: Configure apticron
-  template: src=apticron.conf.j2 dest=/etc/apticron/apticron.conf
-  when: "'admin_contact' in hostvars[inventory_hostname]"
+#- name: Configure apticron
+#  template: src=apticron.conf.j2 dest=/etc/apticron/apticron.conf
+#  when: "'admin_contact' in hostvars[inventory_hostname]"
 
 - locale_gen: name=de_DE.UTF-8 state=present
 
@@ -114,10 +114,10 @@
   notify:
     - reload sshd
 
-- name: Let postfix only listen on localhost
-  lineinfile: dest=/etc/postfix/main.cf regexp="^#?inet_interfaces " line="inet_interfaces = 127.0.0.1 [::1]"
-  notify:
-    - restart postfix
+#- name: Let postfix only listen on localhost
+#  lineinfile: dest=/etc/postfix/main.cf regexp="^#?inet_interfaces " line="inet_interfaces = 127.0.0.1 [::1]"
+#  notify:
+#    - restart postfix
 
 
 - name: remove unneeded rpc/nfc related packages

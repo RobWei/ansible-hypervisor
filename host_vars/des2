@@ -1,17 +1,15 @@
-server_id: 41
+server_id: 45
 
 server_besitzer: "Simon Wüllhorst / descilla"
 
 vm_config:
   installer:
     name: debian_jessie_x64
-  cpus: 4
-  ram: 8192
-  disk: 600
-  storage_pool: private
+  cpus: 2
+  ram: 4096
+  disk: 50
+  storage_pool: ffms
   started: True
   autostart: True
   network_if: br0
 
-administrators:
-  - "descilla"
