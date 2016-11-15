@@ -35,5 +35,6 @@ virtual_machines:
 - name: "des1"
 - name: "kiwix"
 - name: "dyndns"
+- name: "hopglass"
 
 hoster: "hetzner"

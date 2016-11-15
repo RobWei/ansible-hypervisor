@@ -26,5 +26,6 @@ network_shemes:
 
 virtual_machines:
 - name: "forum"
+- name: "remue-09"
 
 hoster: "hetzner"

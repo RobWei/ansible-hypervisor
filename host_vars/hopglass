@@ -1,4 +1,4 @@
-server_id: 45
+server_id: 46
 
 server_besitzer: "FFI"
 
@@ -7,7 +7,7 @@ vm_config:
     name: ubuntu_xenial_x64
   cpus: 2
   ram: 2048
-  disk: 100
+  disk: 200
   storage_pool: ffms
   started: True
   autostart: True
