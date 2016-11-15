@@ -36,5 +36,6 @@ virtual_machines:
 - name: "kiwix"
 - name: "dyndns"
 - name: "hopglass"
+- name: "ansibletest"
 
 hoster: "hetzner"
