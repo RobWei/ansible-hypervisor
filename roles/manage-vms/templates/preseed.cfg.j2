@@ -30,8 +30,10 @@ d-i console-setup/variantcode string nodeadkeys
 # skip displaying a list if there is more than one interface.
 d-i netcfg/choose_interface select auto
 {% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" and virt_installer[hostvars[item.name].vm_config.installer.name].release == "xenial" %}
-#--- re-enabling eth0 interface names for Ubuntu 16 LTS
-d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0
+#--- re-enabling eth0 interface names for Ubuntu 16.04 LTS
+d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0 console=ttyS0
+{% else %}
+d-i debian-installer/add-kernel-opts string console=ttyS0
 {% endif %}
 # To pick a particular interface instead:
 #d-i netcfg/choose_interface select eth1
@@ -71,8 +73,13 @@ d-i netcfg/disable_autoconfig boolean true
 {% if hostvars[item.name].vm_config.network_if == "br0" %}
 d-i netcfg/get_ipaddress string {{hostvars[item.name].ansible_ssh_host}}
 d-i netcfg/get_netmask string 255.255.0.0
+{%if "vhosts_gateway" in network.own_v4 %}
+d-i netcfg/get_gateway string {{network.own_v4.vhosts_gateway}}
+d-i netcfg/get_pointopoint string {{network.own_v4.vhosts_gateway}}
+{% else %}
 d-i netcfg/get_gateway string {{network.own_v4.ip_addr}}
 d-i netcfg/get_pointopoint string {{network.own_v4.ip_addr}}
+{% endif %}
 d-i netcfg/get_nameservers string 8.8.8.8
 d-i netcfg/confirm_static boolean true
 {% endif %}

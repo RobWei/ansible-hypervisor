@@ -17,6 +17,11 @@
 - name: update nameserver configuration (Ubuntu)
   template: src=resolv.conf.j2 dest=/etc/resolvconf/resolv.conf.d/tail
   when: "'nameservers' in hostvars[inventory_hostname] and ansible_distribution == 'Ubuntu'"
+  notify:
+    - reload resolv config
+
+- name: Flush all handlers
+  meta: flush_handlers
 
 - name: add default repo
   #Freifunk- und Rollen-Repos erst in den jeweiligen Rollen
