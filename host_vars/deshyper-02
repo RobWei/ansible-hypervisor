@@ -20,16 +20,14 @@ storage_shemes:
   autostart: True
 
 network_shemes:
-#- name: ipv4-nat
-#  started: True
-#  autostart: True
-#  type: v4nat
-#  bridge_name: virbr1
-#  v6:
-#    network: "2a01:4f8:202:11::2/64"
-#  v4:
-#    network: 192.168.10.0/24
-#    dhcp: True
+- name: ipv4-nat
+  started: True
+  autostart: True
+  type: v4nat
+  bridge_name: virbr1
+  v4:
+    network: 192.168.10.0/24
+    dhcp: True
 - name: host-bridge
   started: True
   autostart: True
@@ -41,3 +39,4 @@ virtual_machines:
 - name: "des2"
 
 hoster: "hetzner"
+
