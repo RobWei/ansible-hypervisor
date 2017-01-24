@@ -1,0 +1,7 @@
+MAILCOW_HOST.MAILCOW_DOMAIN
+{% for tld in mailcow.mail_tlds %}
+dav.{{tld}}
+discover.{{tld}}
+autodiscover.{{tld}}
+autoconfig.{{tld}}
+{% endfor %}

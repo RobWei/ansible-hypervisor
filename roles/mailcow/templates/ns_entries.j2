@@ -1,0 +1,30 @@
+mail                     A          {{ansible_eth0.ipv4.address}}
+dav                      A          {{ansible_eth0.ipv4.address}}
+discover                 A          {{ansible_eth0.ipv4.address}}
+autodiscover             A          {{ansible_eth0.ipv4.address}}
+autoconfig               A          {{ansible_eth0.ipv4.address}}
+
+mail                     AAAA       {{ansible_eth0.ipv6[0].address}}
+dav                      AAAA       {{ansible_eth0.ipv6[0].address}}
+discover                 AAAA       {{ansible_eth0.ipv6[0].address}}
+autodiscover             AAAA       {{ansible_eth0.ipv6[0].address}}
+autoconfig               AAAA       {{ansible_eth0.ipv6[0].address}}
+
+smtp                     IN CNAME   mail
+imap                     IN CNAME   mail
+pop                      IN CNAME   mail
+
+_imap._tcp               IN SRV     0 1 143 mail.{{mailcow.sys.domain}}.
+_imaps._tcp              IN SRV     0 1 993 mail.{{mailcow.sys.domain}}.
+_pop3._tcp               IN SRV     0 1 110 mail.{{mailcow.sys.domain}}.
+_pop3s._tcp              IN SRV     0 1 995 mail.{{mailcow.sys.domain}}.
+_submission._tcp         IN SRV     0 1 587 mail.{{mailcow.sys.domain}}.
+_caldavs._tcp            IN SRV     0 1 443 dav.{{mailcow.sys.domain}}.
+_carddavs._tcp           IN SRV     0 1 443 dav.{{mailcow.sys.domain}}.
+_autodiscover._tcp       IN SRV     0 1 443 autodiscover.{{mailcow.sys.domain}}.
+
+@                        IN MX 10   mail.{{mailcow.sys.domain}}.
+@                        IN TXT     "v=spf1 mx -all"
+; default._domainkey       IN TXT     "v=DKIM1; k=rsa; t=s; s=email; p=..."
+_dmarc                   IN TXT     "v=DMARC1; p=reject; rua=mailto:mailauth-reports@{{mailcow.sys.domain}}"
+; @                        IN TXT     "google-site-verification=..."

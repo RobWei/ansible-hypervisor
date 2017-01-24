@@ -7,3 +7,4 @@
     - { role: vm-network, tags: "vm-network"}
     - { role: hostname, tags: "hostname"}
     - { role: common, tags: "common"}
+    - { role: mailcow, tags: "mailcow", when: "'mailcow' in hostvars[inventory_hostname]"}

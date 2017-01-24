@@ -13,3 +13,12 @@ vm_config:
   autostart: True
   network_if: br0
 
+mailcow:
+  version: "0.14"
+  sys:
+    host: mail
+    domain: freifunk-muensterland.org
+  platform: sogo
+  mail_tlds:
+  - "freifunk-muensterland.org"
+  - "freifunk-muensterland.de"

@@ -1,0 +1,77 @@
+---
+# Mailcow Setup
+
+- name: Remove Exim4 packages
+  apt: pkg="{{item}}" state=absent purge=yes
+  items:
+    - "exim4*"
+    - "postfix"
+
+- name: Hostname im Prompt setzen
+  hostname:
+    name: "{{mailcow.sys.host}}"
+
+- name: Hostname in /etc/hostname setzen
+  copy:
+    content: "{{mailcow.sys.host}}{{'\n'}}"
+    dest: /etc/hostname
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Hostname für IPv4 in /etc/hosts setzen
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^127.0.0.1"
+    line: "127.0.0.1{{'\t'}}{{mailcow.sys.host}}.{{mailcow.sys.domain}} {{mailcow.sys.host}} localhost"
+    state: present
+
+- name: Hostname für IPv6 in /etc/hosts setzen
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^::1"
+    line: "::1{{'\t'}}{{mailcow.sys.host}}.{{mailcow.sys.domain}} {{mailcow.sys.host}} localhost ip6-localhost ip6-loopback"
+    state: present
+
+- name: Create directory for mailcow script
+  file: path=/root/mailcow state=directory mode=0700
+
+- name: Download mailcow script
+  get_url:
+    url: "https://github.com/andryyy/mailcow/archive/v{{mailcow.version}}.tar.gz"
+    dest: "/root/mailcow/v{{mailcow.version}}.tar.gz"
+
+- name: Unarchive mailcow script
+  unarchive: src="/root/mailcow/v{{mailcow.version}}.tar.gz" dest=/root/mailcow/ remote_src=yes
+  args:
+    creates: "/root/mailcow/mailcow-{{mailcow.version}}/"
+
+- name: Configure mailcow.config
+  template: src=mailcow.config.j2 dest="/root/mailcow/mailcow-{{mailcow.version}}/mailcow.config"
+
+
+# TODO: apt-get install fdupes
+# Todo: doesn't run unattended because pkg tmpreaper wants confirmation
+- name: Run mailcow installation script
+  shell: "/root/mailcow/mailcow-{{mailcow.version}}/install.sh"
+  args:
+    chdir: "/root/mailcow/mailcow-{{mailcow.version}}/"
+    executable: /bin/bash
+    creates: "/root/mailcow/mailcow-{{mailcow.version}}/installer.log"
+  register: inst
+
+#- debug: var=inst.stdout_lines
+
+- name: Create domains.txt for letsencrypt
+  template: src=domains.txt.j2 dest="/root/mailcow/mailcow-{{mailcow.version}}/letsencrypt-sh/conf/domains.txt"
+
+- name: Add further domains to nginx config
+  template: src=nginx_mailcow.conf.j2 dest="/etc/nginx/sites-available/mailcow.conf"
+  notify:
+    - restart nginx
+
+- name: Create ns entry list
+  template: src=ns_entries.j2 dest="/root/mailcow/mailcow-{{mailcow.version}}/ns_entries.txt"
+
+
+# TODO: ./install.sh
