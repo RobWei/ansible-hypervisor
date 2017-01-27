@@ -10,6 +10,7 @@ iface eth0 inet static
 	netmask   255.255.255.255
 	gateway   {{network.own_v4.gateway}}
 	pointopoint {{network.own_v4.gateway}}
+	pre-up /sbin/ethtool -K eth0 gro off gso off ||:
 
 iface eth0 inet6 static
 	address {{network.own_v6.network | ipaddr("address")}}
@@ -25,6 +26,7 @@ iface br0 inet static
 	bridge_ports none
 	bridge_fd 0
 	bridge_maxwait 0
+	pre-up /sbin/ethtool -K br0 gro off gso off ||:
 
 iface br0 inet6 static
 	address {{network.own_v6.network | ipaddr("address")}}
