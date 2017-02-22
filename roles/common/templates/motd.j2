@@ -10,7 +10,9 @@
  Server:  {{ ansible_hostname }}
  Besitzer: {{ server_besitzer }}
 
+{% if ansible_eth0 is defined %}
  Öffentliche IPs: {{ansible_eth0.ipv4.address}} / {{ansible_eth0.ipv6[0].address}}
+{% endif %}
 
  Domäne: {{ group_names | last }}
 

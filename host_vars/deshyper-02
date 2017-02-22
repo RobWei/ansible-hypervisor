@@ -37,6 +37,7 @@ network_shemes:
 
 virtual_machines:
 - name: "des2"
+- name: "graphite-node-02"
 
 hoster: "hetzner"
 

@@ -37,5 +37,6 @@ virtual_machines:
 - name: "dyndns"
 - name: "hopglass"
 - name: "ansibletest"
+- name: "FF-UniFi"
 
 hoster: "hetzner"

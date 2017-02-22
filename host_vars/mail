@@ -17,8 +17,9 @@ mailcow:
   version: "0.14"
   sys:
     host: mail
-    domain: freifunk-muensterland.org
+    domain: freifunk-muensterland.de
   platform: sogo
   mail_tlds:
   - "freifunk-muensterland.org"
   - "freifunk-muensterland.de"
+  - "freifunk-muenster.de"

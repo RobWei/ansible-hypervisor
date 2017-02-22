@@ -1,16 +1,17 @@
-server_id: 154
+server_id: 23
 
 server_besitzer: "FFI"
 
 vm_config:
   installer:
-    name: debian_jessie_x64
-  cpus: 2
-  ram: 4096
+    name: ubuntu_xenial_x64
+  cpus: 4
+  ram: 8192
   disk: 50
   storage_pool: ffms
   started: True
   autostart: True
   network_if: br0
-  multiqueue: 4
 
+graphite:
+  ramdisk_size: 6G

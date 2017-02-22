@@ -23,6 +23,9 @@ iface eth0 inet static
         netmask 255.255.255.255
         gateway {{hostvars[hypervisor.name].network.own_v4.ip_addr}}
         pointopoint {{hostvars[hypervisor.name].network.own_v4.ip_addr}}
+{% if 'multiqueue' in vm_config %}
+        pre-up /sbin/ethtool -L eth0 combined {{vm_config.multiqueue}} ||:
+{% endif %}
 
 iface eth0 inet6 static
         address {{hostvars[hypervisor.name].network.own_v6.network | ipaddr(((server_id | string)[0] | int)*6 + server_id) | ipaddr('address')}}

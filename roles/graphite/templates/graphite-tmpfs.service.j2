@@ -1,0 +1,14 @@
+[Unit]
+Description=Ramdisk for graphite
+After=syslog.target
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/src/graphite/openramdisk
+ExecStop=/usr/src/graphite/closeramdisk
+
+[Install]
+WantedBy=docker.service
