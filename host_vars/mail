@@ -1,5 +1,10 @@
 server_id: 169
 
+administrators:
+  - "parad0x"
+  - "descilla"
+  - "corny"
+
 server_besitzer: "Remue"
 
 vm_config:
@@ -23,3 +28,4 @@ mailcow:
   - "freifunk-muensterland.org"
   - "freifunk-muensterland.de"
   - "freifunk-muenster.de"
+
