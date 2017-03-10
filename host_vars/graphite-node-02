@@ -15,3 +15,5 @@ vm_config:
 
 graphite:
   ramdisk_size: 6G
+  domain: "graphite-node-02.freifunk-muensterland.de"
+  auth: "guest:guest"
