@@ -1,11 +1,16 @@
 ---
 # Mailcow Setup
 
+- stat:
+    path: "/root/mailcow/mailcow-{{mailcow.version}}/installer.log"
+  register: mailcow_is_installed
+
 - name: Remove Exim4 packages
   apt: pkg="{{item}}" state=absent purge=yes
   items:
     - "exim4*"
     - "postfix"
+  when: mailcow_is_installed.stat.exists == False
 
 - name: Hostname im Prompt setzen
   hostname:
@@ -73,5 +78,9 @@
 - name: Create ns entry list
   template: src=ns_entries.j2 dest="/root/mailcow/mailcow-{{mailcow.version}}/ns_entries.txt"
 
+- name: Use modified version of spamlearn
+  template:
+    src: spamlearn.j2
+    dest: /etc/cron.daily/spamlearn
 
 # TODO: ./install.sh
