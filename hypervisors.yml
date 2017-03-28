@@ -7,6 +7,6 @@
     - { role: hostname, tags: "hostname"}
     - { role: common, tags: "common"}
     - { role: hyper-network, tags: "hyper-network"}
-    - { role: hyper-bird, tags: "hyper-bird"}
+    - { role: hyper-bird, tags: "hyper-bird", when: '"pointopoint" in network.own_v4'}
     - { role: configure-libvirt, tags: "configure-libvirt"}
     - { role: manage-vms, tags: "manage-vms"}
