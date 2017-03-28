@@ -1,0 +1,29 @@
+server_id: 100
+
+administrators:
+  - "descilla"
+  - "mpw"
+  - "corny"
+  - "handle"
+
+server_besitzer: "Florian Beier / handle"
+
+vm_config:
+  installer:
+    name: debian_jessie_x64
+  cpus: 2
+  ram: 2048
+  disk: 50
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network_if: virbr1
+  multiqueue: 4
+
+hoster: "online.net"
+
+nameservers:
+- "62.210.16.6"
+- "2001:bc8:401::3"
+- "62.210.16.7"
+- "2001:bc8:1::16"

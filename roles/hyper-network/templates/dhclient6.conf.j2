@@ -1,0 +1,5 @@
+interface "eth0" {
+{% if "duid" in network.own_v6 %}
+    send dhcp6.client-id {{network.own_v6.duid}};
+{% endif %}
+}

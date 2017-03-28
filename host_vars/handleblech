@@ -1,26 +1,29 @@
-server_id: 2
+server_id: 83
 
-server_besitzer: "Simon Wüllhorst / descilla"
+administrators:
+  - "descilla"
+  - "mpw"
+  - "corny"
+  - "handle"
+
+server_besitzer: "Florian Beier / handle"
 
 network:
   own_v4: 
-    ip_addr: "148.251.45.18"
-    gateway: "148.251.45.1"
+    ip_addr: "51.15.13.83"
+    gateway: "51.15.13.1"
     netmask: "255.255.255.255"
-    pointopoint: "148.251.45.1"
     type: "static"
+    pointopoint: "51.15.13.1"
   own_v6: 
-    network: "2a01:4f8:202:11::2/64"
-    gateway: "fe80::1"
-    type: "static"
+    type: "dhcp"
+    network: "2001:0bc8:2987::1/48"
+    gateway: "fe80::235:1aff:fe3f:1b67"
+    duid: "{{duid[inventory_hostname]}}"
 
 storage_shemes:
 - name: ffms
   location: "/home/libvirt/images/ffms"
-  started: True
-  autostart: True
-- name: private
-  location: "/home/libvirt/images/private"
   started: True
   autostart: True
 
@@ -41,8 +44,12 @@ network_shemes:
   bridge_name: vnet0
 
 virtual_machines:
-- name: "des2"
-- name: "graphite-node-02"
+- name: "handle"
 
-hoster: "hetzner"
+hoster: "online.net"
 
+nameservers:
+- "62.210.16.6"
+- "2001:bc8:401::3"
+- "62.210.16.7"
+- "2001:bc8:1::16"

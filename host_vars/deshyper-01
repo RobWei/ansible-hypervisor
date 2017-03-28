@@ -6,8 +6,13 @@ network:
   own_v4: 
     ip_addr: "5.9.86.151"
     gateway: "5.9.86.129"
+    netmask: "255.255.255.255"
+    pointopoint: "5.9.86.129"
+    type: "static"
   own_v6: 
     network: "2a01:4f8:162:10d2::2/64"
+    gateway: "fe80::1"
+    type: "static"
 
 storage_shemes:
 - name: ffms

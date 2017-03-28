@@ -9,6 +9,10 @@
 - name: IPv4 Paketweiterleitung aktivieren
   sysctl: name="net.ipv4.conf.all.forwarding" value=1 sysctl_set=yes state=present reload=yes
 
+- name: Enable Proxy Arp
+  sysctl: name="net.ipv4.conf.all.proxy_arp" value=1 sysctl_set=yes state=present reload=yes
+  when: 'hoster is defined and hoster == "online.net"'
+
 - name: ICMPv4 Weiterleitung der VMs zum Gateway unterbinden
   sysctl: name="net.ipv4.conf.eth0.send_redirects" value=0 sysctl_set=yes state=present reload=yes
 
@@ -20,6 +24,12 @@
   template: src="interfaces.j2" dest="/etc/network/interfaces"
   notify:
     - restart networking
+
+- name: Configure dhcpv6 client conf file
+  template:
+    src: "dhclient6.conf.j2"
+    dest: "/etc/dhcp/dhclient6.conf"
+  when: 'network.own_v6.type == "dhcp"'
 
 - name: Execute all triggered handlers
   meta: flush_handlers

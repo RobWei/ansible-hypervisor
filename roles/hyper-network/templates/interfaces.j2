@@ -1,33 +1,55 @@
 # This file is managed by ansible, don't make changes here - they will be overwritten.
+
 # Loopback device:
 auto lo
 iface lo inet loopback
 
 # device: eth0
 auto eth0
+{% if network.own_v4.type == "static" %}
 iface eth0 inet static
-	address   {{network.own_v4.ip_addr}}
-	netmask   255.255.255.255
-	gateway   {{network.own_v4.gateway}}
-	pointopoint {{network.own_v4.gateway}}
-	pre-up /sbin/ethtool -K eth0 gro off gso off ||:
+    address   {{network.own_v4.ip_addr}}
+{% if "netmask" in network.own_v4 %}
+    netmask   {{network.own_v4.netmask}}
+{% endif %}
+    gateway   {{network.own_v4.gateway}}
+{% if "pointopoint" in network.own_v4 %}
+    pointopoint {{network.own_v4.pointopoint}}
+{% endif %}
+{% elif network.own_v4.type == "dhcp" %}
+iface eth0 inet dhcp
+{% endif %}
+    pre-up /sbin/ethtool -K eth0 gro off gso off ||:
 
 iface eth0 inet6 static
-	address {{network.own_v6.network | ipaddr("address")}}
-	netmask 128
-	gateway fe80::1
+{% if network.own_v6.type == "static" %}
+    address {{network.own_v6.network | ipaddr("address")}}
+    netmask 128
+    gateway {{network.own_v6.gateway}}
+{% elif network.own_v6.type == "dhcp" %}
+
+    address {{network.own_v6.network | ipaddr("address")}}
+    netmask 128
+    accept_ra 1
+    gateway {{network.own_v6.gateway}}
+    pre-up dhclient -cf /etc/dhcp/dhclient6.conf -pf /run/dhclient6.eth0.pid -6 -P eth0 ||:
+    pre-down dhclient -x -pf /run/dhclient6.eth0.pid ||:
+{% endif %}
 
 # device: br0
 auto br0
 iface br0 inet static
-	address {{network.own_v4.ip_addr}}
-	netmask 255.255.255.255
-	bridge_stp off
-	bridge_ports none
-	bridge_fd 0
-	bridge_maxwait 0
-	pre-up /sbin/ethtool -K br0 gro off gso off ||:
+    address {{network.own_v4.ip_addr}}
+    netmask {{network.own_v4.netmask}}
+    bridge_stp off
+    bridge_ports none
+    bridge_fd 0
+    bridge_maxwait 0
+    pre-up /sbin/ethtool -K br0 gro off gso off ||:
 
 iface br0 inet6 static
-	address {{network.own_v6.network | ipaddr("address")}}
-	netmask {{network.own_v6.network | ipaddr("prefix")}}
+    address {{network.own_v6.network | ipaddr("address")}}
+    netmask {{network.own_v6.network | ipaddr("prefix")}}
+
+# Include additional config files
+source /etc/network/interfaces.d/*
