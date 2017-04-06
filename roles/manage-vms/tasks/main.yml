@@ -18,7 +18,6 @@
   virt_pool: command=info
   register: storage_pools
   check_mode: no
-  tags: manage_debug
 
 - name: Create preseed directory
   file: path="/opt/installer/" state=directory mode=0755
@@ -39,14 +38,11 @@
     _managed_hosts_vm_config: '{{ _managed_hosts_vm_config | default({}) | combine( {item.name: {"name": item.name, "config": hostvars[item.name].vm_config}})}}'
   with_items:
     - "{{virtual_machines}}"
-  tags: manage_debug
 
 # An addtional step is required because VMs can have multiple NICs
 - name: Prepare VM network settings
   set_fact:
-    #virsh_install_network: '{{ virsh_install_network | default({}) | combine( {item.name: "--network=bridge:" + hostvars[item.name].vm_config.network_if + ",model=virtio "}) }}'
     _virsh_install_network: '{{ _virsh_install_network | default({}) | combine( {item.0.name: {item.1.name: "--network=bridge:" + item.1.name + ",model=virtio"}}, recursive=True) }}'
-  tags: manage_debug
   with_subelements:
     - "{{_managed_hosts_vm_config}}"
     - config.network
@@ -56,16 +52,7 @@
     virsh_install_disk: '{{ virsh_install_disk | default({}) | combine( {item.key: "--disk path=" + storage_pools.pools[item.value.config.storage_pool].path + "/" + item.key + "." + item.value.config.disk.format | string + ",bus=" + item.value.config.disk.bus | string + ",size=" + item.value.config.disk.size | string + ",sparse=" + item.value.config.disk.sparse | string | lower + ",format=" + item.value.config.disk.format | string + ",cache=" + item.value.config.disk.cache | string | lower }) }}'
     virsh_install_cpu: '{{ virsh_install_cpu | default({}) | combine( {item.key: "--vcpus=" + item.value.config.cpus | string}) }}'
     virsh_install_network: '{{ virsh_install_network | default({}) | combine( {item.key: _virsh_install_network[item.key].values() | list | join(" ") } ) }}'
-  tags: manage_debug
   with_dict: "{{_managed_hosts_vm_config}}"
-
-# - debug: var=item
-#   tags: manage_debug
-#   with_items:
-#     - "{{virsh_install_disk}}"
-#     - "{{virsh_install_cpu}}"
-#     - "{{virsh_install_network}}"
-
 
 # note: creates and when as double check to prevent accidential recreation of still created vms
 - name: Create VM with virt-inst
