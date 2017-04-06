@@ -43,5 +43,6 @@ virtual_machines:
 - name: "hopglass"
 - name: "ansibletest"
 - name: "FF-UniFi"
+- name: "ticketsystem"
 
 hoster: "hetzner"

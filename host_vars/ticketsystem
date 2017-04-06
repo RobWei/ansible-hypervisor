@@ -1,4 +1,4 @@
-server_id: 46
+server_id: 49
 
 server_besitzer: "FFI"
 
@@ -8,7 +8,7 @@ vm_config:
   cpus: 2
   ram: 2048
   disk: 
-    size: 100
+    size: 50
     bus: "virtio"
     sparse: "false"
     format: "raw"
@@ -20,4 +20,3 @@ vm_config:
    - name: "virbr1"
      type: "bridge"
      model: "virtio"
-

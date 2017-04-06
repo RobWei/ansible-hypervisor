@@ -7,9 +7,17 @@ vm_config:
     name: ubuntu_xenial_x64
   cpus: 2
   ram: 4096
-  disk: 200
+  disk: 
+    size: 200
+    bus: "virtio"
+    sparse: "false"
+    format: "raw"
+    cache: "none"
   storage_pool: ffms
   started: True
   autostart: True
-  network_if: virbr1
+  network:
+   - name: "virbr1"
+     type: "bridge"
+     model: "virtio"
 

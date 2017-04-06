@@ -19,6 +19,7 @@
 - name: Gathering libvirt storage informations
   virt_pool: command=info
   register: storage_pools
+  tags: manage_debug
 
 #- debug: var=storage_pools
 
@@ -36,27 +37,51 @@
   when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info"
   with_items: "{{virtual_machines}}"
 
+- name: Get vm_configs from hostvars
+  set_fact:
+    _managed_hosts_vm_config: '{{ _managed_hosts_vm_config | default({}) | combine( {item.name: {"name": item.name, "config": hostvars[item.name].vm_config}})}}'
+  with_items:
+    - "{{virtual_machines}}"
+  tags: manage_debug
+
+# An addtional step is required because VMs can have multiple NICs
+- name: Prepare VM network settings
+  set_fact:
+    #virsh_install_network: '{{ virsh_install_network | default({}) | combine( {item.name: "--network=bridge:" + hostvars[item.name].vm_config.network_if + ",model=virtio "}) }}'
+    _virsh_install_network: '{{ _virsh_install_network | default({}) | combine( {item.0.name: {item.1.name: "--network=bridge:" + item.1.name + ",model=virtio"}}, recursive=True) }}'
+  tags: manage_debug
+  with_subelements:
+    - "{{_managed_hosts_vm_config}}"
+    - config.network
+
+- name: Prepare VM configuration
+  set_fact:
+    virsh_install_disk: '{{ virsh_install_disk | default({}) | combine( {item.key: "--disk path=" + storage_pools.pools[item.value.config.storage_pool].path + "/" + item.key + "." + item.value.config.disk.format | string + ",bus=" + item.value.config.disk.bus | string + ",size=" + item.value.config.disk.size | string + ",sparse=" + item.value.config.disk.sparse | string | lower + ",format=" + item.value.config.disk.format | string + ",cache=" + item.value.config.disk.cache | string | lower }) }}'
+    virsh_install_cpu: '{{ virsh_install_cpu | default({}) | combine( {item.key: "--vcpus=" + item.value.config.cpus | string}) }}'
+    virsh_install_network: '{{ virsh_install_network | default({}) | combine( {item.key: _virsh_install_network[item.key].values() | list | join(" ") } ) }}'
+  tags: manage_debug
+  with_dict: "{{_managed_hosts_vm_config}}"
+
+# - debug: var=item
+#   tags: manage_debug
+#   with_items:
+#     - "{{virsh_install_disk}}"
+#     - "{{virsh_install_cpu}}"
+#     - "{{virsh_install_network}}"
+
+
 # note: creates and when as double check to prevent accidential recreation of still created vms
-- name: Create VM with virt-inst (Debian Hypervisor)
-  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --cpuset=auto --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == 'ubuntu' and virt_installer[hostvars[item.name].vm_config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %} console=ttyS0\""
+- name: Create VM with virt-inst
+  shell: "virt-install --connect qemu:///system -n {{item.key | replace('-','_')}} -r {{item.value.config.ram}} {{virsh_install_cpu[item.key]}} {{virsh_install_disk[item.key]}} --noautoconsole --os-type=linux --accelerate {{virsh_install_network[item.key]}} -k de --os-variant=debianwheezy --virt-type kvm --location={{virt_installer[item.value.config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.key}}/preseed.cfg --extra-args=\"auto=true priority=critical{% if virt_installer[item.value.config.installer.name].distribution == 'ubuntu' and virt_installer[item.value.config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %} console=ttyS0\""
   args:
-      creates: "{{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw"
-  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info and ansible_distribution == 'Debian'"
-  with_items: "{{virtual_machines}}"
-
-- name: Create VM with virt-inst (Ubuntu Hypervisor)
-  shell: "virt-install --connect qemu:///system -n {{item.name | replace('-','_')}} -r {{hostvars[item.name].vm_config.ram}} --vcpus={{hostvars[item.name].vm_config.cpus}} --disk path={{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw,bus=virtio,size={{hostvars[item.name].vm_config.disk}},sparse=false,format=raw,cache=none --vnc --noautoconsole --os-type=linux --accelerate --network=bridge:{{hostvars[item.name].vm_config.network_if}},model=virtio -k de --os-variant=debianwheezy --virt-type kvm --location={{virt_installer[hostvars[item.name].vm_config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.name}}/preseed.cfg --extra-args=\"auto=true priority=critical{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == 'ubuntu' and virt_installer[hostvars[item.name].vm_config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %} console=ttyS0\""
-  args:
-      creates: "{{storage_pools.pools[hostvars[item.name].vm_config.storage_pool].path}}/{{item.name}}.raw"
-  when: "'{{item.name | replace(\"-\",\"_\")}}' not in vm_info and ansible_distribution == 'Ubuntu'"
-  with_items: "{{virtual_machines}}"
-
+      creates: "{{storage_pools.pools[item.value.config.storage_pool].path}}/{{item.key}}.raw"
+  when: "'{{item.key | replace(\"-\",\"_\")}}' not in vm_info"
+  with_dict: "{{_managed_hosts_vm_config}}"
 
 - name: Start vms which are set to be started and not running
   virt: state=running name={{item.name | replace(\"-\",\"_\")}}
   when: hostvars[item.name].vm_config.started == True
   with_items: "{{virtual_machines}}"
-
 
 - name: Stop vms which are not set to be started and running
   virt: state=shutdown name={{item.name | replace(\"-\",\"_\")}}

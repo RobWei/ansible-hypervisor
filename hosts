@@ -14,6 +14,7 @@ kiwix             ansible_ssh_host=5.9.86.151                            ansible
 dyndns            ansible_ssh_host=5.9.86.151                            ansible_ssh_port=223
 hopglass          ansible_ssh_host=5.9.86.151                            ansible_ssh_port=224
 ansibletest       ansible_ssh_host=5.9.86.151                            ansible_ssh_port=225
+ticketsystem      ansible_ssh_host=5.9.86.151                            ansible_ssh_port=226
 graphite-node-02  ansible_ssh_host=148.251.101.196
 FF-AC2            ansible_ssh_host=2a03:2260:115:1600:5054:ff:fea0:c2a0
 FF-UniFi          ansible_ssh_host=2a03:2260:115:1600:5054:ff:fe1b:e927

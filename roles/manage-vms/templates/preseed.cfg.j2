@@ -49,7 +49,7 @@ d-i debian-installer/add-kernel-opts string console=ttyS0
 
 # If you prefer to configure the network manually, uncomment this line and
 # the static network configuration below.
-{% if hostvars[item.name].vm_config.network_if == "br0" %}
+{% if hostvars[item.name].vm_config.network[0].name == "br0" %}
 d-i netcfg/disable_autoconfig boolean true
 {% endif %}
 #d-i netcfg/disable_dhcp boolean true
@@ -70,7 +70,7 @@ d-i netcfg/disable_autoconfig boolean true
 #d-i netcfg/confirm_static boolean true
 
 # dirty hack for p2p addresses (updated after installation)
-{% if hostvars[item.name].vm_config.network_if == "br0" %}
+{% if hostvars[item.name].vm_config.network[0].name == "br0" %}
 d-i netcfg/get_ipaddress string {{hostvars[item.name].ansible_ssh_host}}
 d-i netcfg/get_netmask string 255.255.0.0
 {%if "vhosts_gateway" in network.own_v4 %}
