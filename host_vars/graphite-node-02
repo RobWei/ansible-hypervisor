@@ -14,6 +14,9 @@ vm_config:
   network_if: br0
 
 graphite:
-  ramdisk_size: 6G
+  ramdisk_size: 10G
   domain: "graphite-node-02.freifunk-muensterland.de"
-  auth: "guest:guest"
+  auth: 
+   nginx: "guest:guest"
+   name: guest
+   pass: guest

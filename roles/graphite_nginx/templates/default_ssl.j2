@@ -32,7 +32,7 @@ server {
         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header        X-Forwarded-Proto $scheme;
 
-        proxy_set_header Authorization "Basic {{graphite.auth.encode("utf8") | b64encode }}";
+        proxy_set_header Authorization "Basic {{graphite.auth.nginx.encode("utf8") | b64encode }}";
 
         proxy_pass              http://127.0.0.1:8000/;
         proxy_redirect          off;

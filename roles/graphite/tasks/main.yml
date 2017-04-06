@@ -44,15 +44,8 @@
   template: src=storage-schemas.conf.j2 dest=/usr/src/graphite/storage-schemas.conf
 
 - name: create .htpasswd
-  htpasswd: path=/usr/src/graphite/.htpasswd name=admin password='{{monitoring_pw}}' crypt_scheme=md5_crypt
-  when: "'monitoring_pw' in hostvars[inventory_hostname]"
-
-- name: create empty .htpasswd
-  command: touch /usr/src/graphite/.htpasswd
-  args:
-    creates: /usr/src/graphite/.htpasswd
-  when: "'monitoring_pw' not in hostvars[inventory_hostname]"
-
+  htpasswd: path=/usr/src/graphite/.htpasswd name='{{graphite.auth.name}}' password='{{graphite.auth.pass}}' crypt_scheme=md5_crypt
+  when: "'auth' in graphite"
 
 # create data folders '
 
