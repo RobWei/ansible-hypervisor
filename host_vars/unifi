@@ -1,0 +1,23 @@
+server_id: 48
+
+server_besitzer: "Marius Hellmann / corny456"
+
+vm_config:
+  installer:
+    name: ubuntu_xenial_x64
+  cpus: 2
+  ram: 4096
+  disk: 
+    size: 200
+    bus: "virtio"
+    sparse: "false"
+    format: "raw"
+    cache: "none"
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network:
+   - name: "virbr1"
+     type: "bridge"
+     model: "virtio"
+

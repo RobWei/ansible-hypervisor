@@ -42,5 +42,7 @@ network_shemes:
 
 virtual_machines:
 - name: "corny"
+- name: "build"
+- name: "unifi"
 
 hoster: "hetzner"
