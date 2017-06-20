@@ -21,3 +21,5 @@ FF-AC2            ansible_ssh_host=2a03:2260:115:1600:5054:ff:fea0:c2a0
 FF-UniFi          ansible_ssh_host=2a03:2260:115:1600:5054:ff:fe1b:e927
 handle            ansible_ssh_host=51.15.146.100
 corny             ansible_ssh_host=144.76.81.157
+build             ansible_ssh_host=144.76.81.199                         ansible_ssh_port=222
+unifi             ansible_ssh_host=2a03:2260:115:1600:5054:ff:fe14:bb9f 
