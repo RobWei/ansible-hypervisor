@@ -38,11 +38,12 @@ network_shemes:
 
 virtual_machines:
 - name: "des1"
-- name: "kiwix"
-- name: "dyndns"
-- name: "hopglass"
-- name: "ansibletest"
-- name: "FF-UniFi"
-- name: "ticketsystem"
+- name: "des3"
+#- name: "kiwix"
+#- name: "dyndns"
+#- name: "hopglass"
+#- name: "ansibletest"
+#- name: "FF-UniFi"
+#- name: "ticketsystem"
 
 hoster: "hetzner"
