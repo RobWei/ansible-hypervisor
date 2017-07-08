@@ -33,5 +33,7 @@ virtual_machines:
 - name: "forum"
 - name: "mail"
 - name: "remue-09"
+- name: "remue-01"
+- name: "icinga"
 
 hoster: "hetzner"

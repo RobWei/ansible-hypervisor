@@ -1,10 +1,10 @@
-server_id: 49
+server_id: 172
 
 server_besitzer: "FFI"
 
 vm_config:
   installer:
-    name: ubuntu_xenial_x64
+    name: debian_jessie_x64
   cpus: 2
   ram: 2048
   disk: 
@@ -17,6 +17,7 @@ vm_config:
   started: True
   autostart: True
   network:
-   - name: "virbr1"
+   - name: "br0"
      type: "bridge"
      model: "virtio"
+

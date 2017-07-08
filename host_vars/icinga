@@ -1,14 +1,14 @@
-server_id: 182
+server_id: 173
 
-server_besitzer: "Marius Hellmann / corny456"
+server_besitzer: "FFI"
 
 vm_config:
   installer:
     name: ubuntu_xenial_x64
-  cpus: 4 
-  ram: 2048
+  cpus: 2
+  ram: 1024
   disk: 
-    size: 500
+    size: 50
     bus: "virtio"
     sparse: "false"
     format: "raw"
@@ -17,7 +17,7 @@ vm_config:
   started: True
   autostart: True
   network:
-   - name: "virbr1"
+   - name: "br0"
      type: "bridge"
      model: "virtio"
-
+  multiqueue: 2
