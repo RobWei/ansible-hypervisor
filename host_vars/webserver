@@ -4,9 +4,9 @@ server_besitzer: "FFI"
 
 vm_config:
   installer:
-    name: debian_jessie_x64
-  cpus: 4
-  ram: 4096
+    name: ubuntu_xenial_x64
+  cpus: 2
+  ram: 1024
   disk: 
     size: 50
     bus: "virtio"
@@ -20,4 +20,4 @@ vm_config:
    - name: "br0"
      type: "bridge"
      model: "virtio"
-  multiqueue: 4
+  multiqueue: 2 
