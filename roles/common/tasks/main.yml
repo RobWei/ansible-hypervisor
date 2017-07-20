@@ -1,5 +1,12 @@
 ---
 # Allgemeine Konfigurationen für alle Server
+- name: install common packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: installed
+  with_items:
+    - resolvconf
 
 - name: create motd file
   template: src=motd.j2 dest=/etc/motd
