@@ -58,7 +58,7 @@
 - name: Create VM with virt-inst
   shell: >
     virt-install --connect qemu:///system -n {{item.key | replace('-','_')}} -r {{item.value.config.ram}} {{virsh_install_cpu[item.key]}} {{virsh_install_disk[item.key]}}
-    --noautoconsole --os-type=linux --accelerate {{virsh_install_network[item.key]}} -k de --os-variant=debianwheezy --virt-type kvm
+    --noautoconsole --os-type=linux --accelerate {{virsh_install_network[item.key]}} -k de --os-variant=ubuntuxenial --virt-type kvm
     --location={{virt_installer[item.value.config.installer.name].net_installer}} --initrd-inject=/opt/installer/{{item.key}}/preseed.cfg
     --extra-args="auto=true priority=critical
     {% if virt_installer[item.value.config.installer.name].distribution == 'ubuntu' and virt_installer[item.value.config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %}
@@ -79,13 +79,16 @@
   with_items: "{{virtual_machines}}"
 
 
-#- name: Enable autostart for vms if enabled in configuration
-#  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
-#  when: hostvars[item.name].vm_config.autostart == True
-#  with_items: "{{virtual_machines}}"
+- name: Enable autostart for vms if enabled in configuration
+  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.autostart == True
+  with_items: "{{virtual_machines}}"
 
 
-#- name: Disable autostart for vms if disabled in configuration
-#  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
-#  when: hostvars[item.name].vm_config.autostart != True
-#  with_items: "{{virtual_machines}}"
+- name: Disable autostart for vms if disabled in configuration
+  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  when: hostvars[item.name].vm_config.autostart != True
+  with_items: "{{virtual_machines}}"
+
+- debug:
+    var: hoster

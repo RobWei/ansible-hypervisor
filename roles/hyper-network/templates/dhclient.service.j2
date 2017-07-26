@@ -1,0 +1,11 @@
+[Unit]
+Description=dhclient for sending DUID IPv6
+Wants=network.target
+Before=network.target
+
+[Service]
+Type=forking
+ExecStart=/sbin/dhclient -cf /etc/dhcp/dhclient6.conf -6 -P -v eth0
+
+[Install]
+WantedBy=multi-user.target
