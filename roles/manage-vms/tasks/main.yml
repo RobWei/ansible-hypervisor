@@ -64,7 +64,7 @@
     {% if virt_installer[item.value.config.installer.name].distribution == 'ubuntu' and virt_installer[item.value.config.installer.name].release == 'xenial' %} net.ifnames=0 biosdevname=0{% endif %}
     console=ttyS0"
   args:
-      creates: "{{storage_pools.pools[item.value.config.storage_pool].path}}/{{item.key}}.raw"
+      creates: "{{storage_pools.pools[item.value.config.storage_pool].path}}/{{item.key}}.{{item.value.config.disk.format}}"
   when: "'{{item.key | replace(\"-\",\"_\")}}' not in vm_info"
   with_dict: "{{_managed_hosts_vm_config}}"
 
