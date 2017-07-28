@@ -135,6 +135,9 @@ d-i mirror/country string manual
 {% if "hoster" in hostvars and hoster == "hetzner" %}
 d-i mirror/http/hostname string mirror.hetzner.de
 d-i mirror/http/directory string /ubuntu/packages
+{% elif "hoster" in hostvars and hoster == "onlinedotnet" %}
+d-i mirror/http/hostname string mirrors.online.net
+d-i mirror/http/directory string /ubuntu
 {% else %}
 d-i mirror/http/hostname string de.archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu
@@ -143,6 +146,9 @@ d-i mirror/http/directory string /ubuntu
 {% if "hoster" in hostvars and hoster == "hetzner" %}
 d-i mirror/http/hostname string mirror.hetzner.de
 d-i mirror/http/directory string /debian/packages
+{% elif "hoster" in hostvars and hoster == "onlinedotnet" %}
+d-i mirror/http/hostname string mirrors.online.net
+d-i mirror/http/directory string /debian
 {% else %}
 d-i mirror/http/hostname string ftp.de.debian.org
 d-i mirror/http/directory string /debian

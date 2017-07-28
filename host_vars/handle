@@ -10,14 +10,14 @@ server_besitzer: "Florian Beier / handle"
 
 vm_config:
   installer:
-    name: debian_jessie_x64
+    name: ubuntu_xenial_x64
   cpus: 4
   ram: 2048
   disk: 
-    size: 50
+    size: 20
     bus: "virtio"
-    sparse: "false"
-    format: "raw"
+    sparse: "true"
+    format: "qcow2"
     cache: "none"
   storage_pool: ffms
   started: True
@@ -28,7 +28,7 @@ vm_config:
      model: "virtio"
   multiqueue: 4
 
-hoster: "online.net"
+hoster: "onlinedotnet"
 
 nameservers:
 - "62.210.16.6"

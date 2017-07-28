@@ -10,20 +10,20 @@ server_besitzer: "Florian Beier / handle"
 
 network:
   own_v4: 
-    ip_addr: "51.15.13.83"
-    gateway: "51.15.13.1"
+    ip_addr: "62.210.220.140"
+    gateway: "62.210.220.1"
     netmask: "255.255.255.255"
     type: "static"
-    pointopoint: "51.15.13.1"
+    pointopoint: "62.210.220.1"
   own_v6: 
     type: "dhcp"
-    network: "2001:0bc8:2987::1/48"
-    gateway: "fe80::235:1aff:fe3f:1b67"
+    network: "2001:0bc8:2987::2/48"
+    gateway: "fe80::7626:acff:fe76:38a3"
     duid: "{{duid[inventory_hostname]}}"
 
 storage_shemes:
 - name: ffms
-  location: "/home/libvirt/images/ffms"
+  location: "/var/lib/libvirt/images/ffms"
   started: True
   autostart: True
 
@@ -46,7 +46,7 @@ network_shemes:
 virtual_machines:
 - name: "handle"
 
-hoster: "online.net"
+hoster: "onlinedotnet"
 
 nameservers:
 - "62.210.16.6"

@@ -1,4 +1,6 @@
 ---
+- include_vars: passwords.yml
+
 # Vorbereitung für die Virtualisierung mit libvirt/KVM
 - name: install bridge-utils
   apt:
@@ -30,6 +32,18 @@
     src: "dhclient6.conf.j2"
     dest: "/etc/dhcp/dhclient6.conf"
   when: 'network.own_v6.type == "dhcp"'
+
+- name: Configure systemd service for dhclient
+  template:
+    src: "dhclient.service.j2"
+    dest: "/etc/systemd/system/dhclient.service"
+  when: 'network.own_v6.type == "dhcp"'
+
+- name: Enable and start the dhclient systemd service
+  systemd:
+    name: dhclient.service
+    enabled: yes
+    state: started
 
 - name: Execute all triggered handlers
   meta: flush_handlers

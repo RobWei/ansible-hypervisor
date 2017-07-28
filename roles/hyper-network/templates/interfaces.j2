@@ -27,13 +27,10 @@ iface eth0 inet6 static
     netmask 128
     gateway {{network.own_v6.gateway}}
 {% elif network.own_v6.type == "dhcp" %}
-
     address {{network.own_v6.network | ipaddr("address")}}
     netmask 128
     accept_ra 1
     gateway {{network.own_v6.gateway}}
-    pre-up dhclient -cf /etc/dhcp/dhclient6.conf -pf /run/dhclient6.eth0.pid -6 -P eth0 ||:
-    pre-down dhclient -x -pf /run/dhclient6.eth0.pid ||:
 {% endif %}
 
 # device: br0
