@@ -79,16 +79,16 @@
   with_items: "{{virtual_machines}}"
 
 
-- name: Enable autostart for vms if enabled in configuration
-  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
-  when: hostvars[item.name].vm_config.autostart == True
-  with_items: "{{virtual_machines}}"
-
-
-- name: Disable autostart for vms if disabled in configuration
-  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
-  when: hostvars[item.name].vm_config.autostart != True
-  with_items: "{{virtual_machines}}"
+  #- name: Enable autostart for vms if enabled in configuration
+  #  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  #  when: hostvars[item.name].vm_config.autostart == True
+  #  with_items: "{{virtual_machines}}"
+  #
+  #
+  #- name: Disable autostart for vms if disabled in configuration
+  #  virt: command=autostart name={{item.name | replace(\"-\",\"_\")}}
+  #  when: hostvars[item.name].vm_config.autostart != True
+  #  with_items: "{{virtual_machines}}"
 
 - debug:
     var: hoster

@@ -17,7 +17,7 @@ network:
     pointopoint: "62.210.220.1"
   own_v6: 
     type: "dhcp"
-    network: "2001:0bc8:2987::2/48"
+    network: "2001:0bc8:2987:300::2/56"
     gateway: "fe80::7626:acff:fe76:38a3"
     duid: "{{duid[inventory_hostname]}}"
 
