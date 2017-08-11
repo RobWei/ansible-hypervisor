@@ -1,0 +1,125 @@
+---
+
+# required: xmlstarlet
+
+# - name: Gathering libvirt VM informations
+#   virt: command=info
+#   check_mode: no
+#   register: vm_info
+
+# - name: Print VM Info
+#   debug: var=vm_info
+
+# - name: Get list of defined vms
+#   virt: command=list_vms
+#   check_mode: no
+#   register: vm_vms
+
+# - name: Print list of defined vms
+#   debug: var=vm_vms
+
+# - name: Gathering libvirt storage informations
+#   virt_pool: command=info
+#   register: storage_pools
+#   check_mode: no
+
+# - name: Print list of storage informations
+#   debug: var=storage_pools
+
+# - name: Gathering libvirt network informations
+#   virt_net: command=info
+#   register: net_info
+
+# - name: Print network informations
+#   debug: var=net_info
+
+# - name: Gathering Hypervisor info
+#   virt:
+#     command: nodeinfo
+#   register: nodeinfo
+
+# - name: Print Hypervsior info
+#   debug: var=nodeinfo
+
+# - debug:
+#     var: item
+#   with_items: "{{vm_config.network}}"
+
+- name: Gathering all hypervisors facts
+  check_mode: no
+  set_fact:
+    hyper_facts: '{{hyper_facts | default({}) | combine( {item: hostvars[item]})}}'
+  with_items:
+   - "{{groups['hypervisors']}}"
+
+- name: Determine current hypervisor inventory hostname
+  check_mode: no
+  set_fact:
+    hypervisor_inventory_hostname: "{{item.0.inventory_hostname}}"
+  when: "item.1.name == inventory_hostname"
+  with_subelements:
+    - "{{hyper_facts}}"
+    - virtual_machines
+  loop_control:
+    label: "{{item.0.inventory_hostname}} <--> {{item.1.name}}"
+
+# - debug: var=hypervisor_inventory_hostname
+
+- name: get the xml
+  virt:
+    command: get_xml
+    name: "{{inventory_hostname}}"
+  register: the_xml
+  delegate_facts: True
+  delegate_to: "{{hypervisor_inventory_hostname}}"
+
+# - name: Print the_xml info
+#   debug: var=the_xml
+
+- name: Store current xml
+  copy: content="{{the_xml["get_xml"]}}" dest="/tmp/{{inventory_hostname}}.xml"
+  delegate_facts: True
+  delegate_to: "{{hypervisor_inventory_hostname}}"
+
+- name: Set Multiqueue
+  lineinfile:
+    dest: "/tmp/{{inventory_hostname}}.xml"
+    insertafter: "[\\t ]*<model type='virtio'/>"
+    regexp: "^([\\t ]*)<driver name='vhost' queues='(\\d+)'/>"
+    line: "      <driver name='vhost' queues='{{vm_config.multiqueue}}'/>"
+  delegate_facts: True
+  delegate_to: "{{hypervisor_inventory_hostname}}"
+  when: "vm_config.multiqueue is defined"
+  notify:
+    - destroy guest
+    - undefine guest
+    - define guest
+    - start guest
+
+- name: Set interfaces from setup to productive, if setup interface was defined
+  lineinfile:
+    dest: "/tmp/{{inventory_hostname}}.xml"
+    regexp: "[\\t ]*<source bridge='{{item.setup_name}}'/>"
+    line: "      <source bridge='{{item.name}}'/>"
+    backrefs: yes
+  delegate_facts: True
+  delegate_to: "{{hypervisor_inventory_hostname}}"
+  with_items: "{{vm_config.network}}"
+  when: "item.setup_name is defined"
+  notify:
+    - destroy guest
+    - undefine guest
+    - define guest
+    - start guest
+
+- name: get the updated xml
+  slurp:
+    src: "/tmp/{{inventory_hostname}}.xml"
+  register: the_xml
+  delegate_facts: True
+  delegate_to: "{{hypervisor_inventory_hostname}}"
+
+# - debug: msg="{{the_xml.content | b64decode}}"
+
+- name: Flush all handlers
+  meta: flush_handlers
