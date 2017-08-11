@@ -5,7 +5,7 @@
   gather_facts: False
   remote_user: root
   roles:
-    - { role: prepare_guest, tags: "prepare_guest"}
+#    - { role: prepare_guest, tags: "prepare_guest"}
     - { role: vm-network, tags: "vm-network"}
     - { role: hostname, tags: "hostname"}
     - { role: common, tags: "common"}
