@@ -39,11 +39,11 @@
     dest: "/etc/systemd/system/dhclient.service"
   when: 'network.own_v6.type == "dhcp"'
 
-- name: Enable and start the dhclient systemd service
-  systemd:
-    name: dhclient.service
-    enabled: yes
-    state: started
+  #- name: Enable and start the dhclient systemd service
+  #systemd:
+  #  name: dhclient.service
+  #  enabled: yes
+  #  state: started
 
 - name: Execute all triggered handlers
   meta: flush_handlers
