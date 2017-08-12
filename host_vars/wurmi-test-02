@@ -1,0 +1,23 @@
+server_id: 73
+
+server_besitzer: "FFI"
+
+vm_config:
+  installer:
+    name: debian_jessie_x64
+  cpus: 1
+  ram: 1024
+  disk: 
+    size: 50
+    bus: "virtio"
+    sparse: "false"
+    format: "raw"
+    cache: "none"
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network:
+   - name: "virbr1"
+     type: "bridge"
+     model: "virtio"
+

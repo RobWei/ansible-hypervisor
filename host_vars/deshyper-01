@@ -39,5 +39,7 @@ network_shemes:
 virtual_machines:
 - name: "des1"
 - name: "webserver"
+- name: "wurmi-test-01"
+- name: "wurmi-test-02"
 
 hoster: "hetzner"
