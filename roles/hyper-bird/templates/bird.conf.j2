@@ -20,6 +20,8 @@ protocol direct 'p-direct'{
 protocol static 'p-static-vm'{
   export all;
 {% for host in virtual_machines %}
+{% if hostvars[host.name].ansible_ssh_port is not defined or hostvars[host.name].ansible_ssh_port == 22 %}
   route {{hostvars[host.name].ansible_ssh_host}}/32 via "br0";
+{% endif %}
 {% endfor %}
 };
