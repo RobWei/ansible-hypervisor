@@ -42,7 +42,7 @@
 # An addtional step is required because VMs can have multiple NICs
 - name: Prepare VM network settings
   set_fact:
-    _virsh_install_network: '{{ _virsh_install_network | default({}) | combine( {item.0.name: {item.1.name: "--network=bridge:" + item.1.name + ",model=virtio"}}, recursive=True) }}'
+    _virsh_install_network: '{{ _virsh_install_network | default({}) | combine( {item.0.name: {item.1.name: "--network=bridge:" + ( item.1.setup_name if item.1.setup_name is defined else item.1.name )+ ",model=virtio"}}, recursive=True) }}'
   with_subelements:
     - "{{_managed_hosts_vm_config}}"
     - config.network

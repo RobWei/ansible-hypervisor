@@ -1,0 +1,8 @@
+---
+# Playbook zur Konfiguration der managed-vms
+
+- hosts: managed-vms
+  gather_facts: False
+  remote_user: root
+  roles:
+    - { role: prepare_guest, tags: "prepare_guest"}

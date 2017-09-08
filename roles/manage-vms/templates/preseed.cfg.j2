@@ -1,4 +1,4 @@
-#### Contents of the preconfiguration file (for wheezy)
+#### Contents of the preconfiguration file
 ### Localization
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
@@ -49,9 +49,6 @@ d-i debian-installer/add-kernel-opts string console=ttyS0
 
 # If you prefer to configure the network manually, uncomment this line and
 # the static network configuration below.
-{% if hostvars[item.name].vm_config.network[0].name == "br0" %}
-d-i netcfg/disable_autoconfig boolean true
-{% endif %}
 #d-i netcfg/disable_dhcp boolean true
 
 # If you want the preconfiguration file to work on systems both with and
@@ -70,7 +67,8 @@ d-i netcfg/disable_autoconfig boolean true
 #d-i netcfg/confirm_static boolean true
 
 # dirty hack for p2p addresses (updated after installation)
-{% if hostvars[item.name].vm_config.network[0].name == "br0" %}
+{% if hostvars[item.name].vm_config.network[0].name == "br0" and "setup_name" not in hostvars[item.name].vm_config.network[0] %}
+d-i netcfg/disable_autoconfig boolean true
 d-i netcfg/get_ipaddress string {{hostvars[item.name].ansible_ssh_host}}
 d-i netcfg/get_netmask string 255.255.0.0
 {%if "vhosts_gateway" in network.own_v4 %}
@@ -483,4 +481,24 @@ in-target touch /root/.ssh/authorized_keys; \
 {% for administrator in hostvars[item.name].administrators %}
 echo "{{ lookup('file', 'keyfiles/' + administrator + '.pub') }}" >> /target/root/.ssh/authorized_keys; \
 {% endfor %}
+{% if "setup_name" in hostvars[item.name].vm_config.network[0] %}
+rm -f /usr/lib/finish-install.d/55netcfg-copy-config /usr/lib/finish-install.d/50config-target-network; \
+echo "" > /target/etc/network/interfaces; \
+echo "source /target/etc/network/interfaces.d/*" >> /target/etc/network/interfaces; \
+echo "auto lo" >> /target/etc/network/interfaces; \
+echo "iface lo inet loopback" >> /target/etc/network/interfaces; \
+echo "auto eth0" >> /target/etc/network/interfaces; \
+echo "iface eth0 inet static" >> /target/etc/network/interfaces; \
+echo "        address {{hostvars[item.name].ansible_ssh_host}}" >> /target/etc/network/interfaces; \
+echo "        netmask 255.255.255.255" >> /target/etc/network/interfaces; \
+echo "        gateway {{network.own_v4.ip_addr}}" >> /target/etc/network/interfaces; \
+echo "        pointopoint {{network.own_v4.ip_addr}}" >> /target/etc/network/interfaces; \
+{% if "multiqueue" in hostvars[item.name].vm_config %}
+echo "        pre-up /sbin/ethtool -L eth0 combined {{hostvars[item.name].vm_config.multiqueue}} ||:" >> /target/etc/network/interfaces; \
+{% endif %}
+echo "iface eth0 inet6 static" >> /target/etc/network/interfaces; \
+echo "        address {{network.own_v6.network | ipaddr(((hostvars[item.name].server_id | string)[0] | int)*6 + hostvars[item.name].server_id) | ipaddr('address')}}" >> /target/etc/network/interfaces; \
+echo "        gateway {{network.own_v6.network | ipaddr('address')}}" >> /target/etc/network/interfaces; \
+echo "        netmask {{network.own_v6.network | ipaddr('prefix')}}" >> /target/etc/network/interfaces; \
+{% endif %}
 echo;

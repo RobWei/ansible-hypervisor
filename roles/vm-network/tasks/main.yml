@@ -1,12 +1,5 @@
 ---
 
-- name: install ethtool if required
-  apt:
-    pkg: "ethtool"
-    update_cache: yes
-    state: installed
-  when: 'multiqueue' in vm_config
-
 - name: configure /etc/network/interfaces/
   template: src="interfaces.j2" dest="/etc/network/interfaces"
   notify:
