@@ -2,7 +2,7 @@
 - name: destroy guest
   virt:
     command: destroy
-    name: "{{inventory_hostname}}"
+    name: "{{inventory_hostname | replace(\"-\",\"_\")}}"
   delegate_facts: True
   delegate_to: "{{hypervisor_inventory_hostname}}"
   failed_when: False
@@ -10,7 +10,7 @@
 - name: undefine guest
   virt:
     command: undefine
-    name: "{{inventory_hostname}}"
+    name: "{{inventory_hostname | replace(\"-\",\"_\")}}"
   delegate_facts: True
   delegate_to: "{{hypervisor_inventory_hostname}}"
   failed_when: False
@@ -18,7 +18,7 @@
 - name: define guest
   virt:
     command: define
-    name: "{{inventory_hostname}}"
+    name: "{{inventory_hostname | replace(\"-\",\"_\")}}"
     xml: "{{the_xml.content | b64decode}}"
   delegate_facts: True
   delegate_to: "{{hypervisor_inventory_hostname}}"
@@ -26,6 +26,6 @@
 - name: start guest
   virt:
     command: start
-    name: "{{inventory_hostname}}"
+    name: "{{inventory_hostname | replace(\"-\",\"_\")}}"
   delegate_facts: True
   delegate_to: "{{hypervisor_inventory_hostname}}"

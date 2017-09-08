@@ -68,7 +68,7 @@
 - name: get the xml
   virt:
     command: get_xml
-    name: "{{inventory_hostname}}"
+    name: "{{inventory_hostname | replace(\"-\",\"_\")}}"
   register: the_xml
   delegate_facts: True
   delegate_to: "{{hypervisor_inventory_hostname}}"
