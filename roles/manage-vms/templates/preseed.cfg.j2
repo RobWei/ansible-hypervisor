@@ -400,9 +400,10 @@ d-i partman/confirm_nooverwrite boolean true
 #tasksel tasksel/first multiselect standard, web-server
 {% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" %}
 tasksel tasksel/first multiselect ubuntu-standard openssh-server
-d-i pkgsel/include string python man-db
+d-i pkgsel/include string python man-db{% if "multiqueue" in hostvars[item.name].vm_config %} ethtool{% endif %}
 {% else %}
 tasksel tasksel/first multiselect standard ssh-server
+d-i pkgsel/include string {% if "multiqueue" in hostvars[item.name].vm_config %}ethtool{% endif %}
 {% endif %}
 
 # If the desktop task is selected, install the kde and xfce desktops
