@@ -44,5 +44,6 @@ virtual_machines:
 - name: "bergstr-01"
 - name: "emscherl-01"
 - name: "emscher-map"
+- name: "berg-map"
 
 hoster: "hetzner"

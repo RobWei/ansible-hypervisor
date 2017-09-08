@@ -21,6 +21,7 @@ corny             ansible_ssh_host=144.76.81.157
 bergstr-01        ansible_ssh_host=176.9.38.150 ansible_ssh_port=222
 emscherl-01       ansible_ssh_host=176.9.38.158
 emscher-map       ansible_ssh_host=176.9.38.156
+berg-map          ansible_ssh_host=176.9.38.157
 wurmi-test-01     ansible_ssh_host=5.9.86.151 ansible_ssh_port=500
 wurmi-test-02     ansible_ssh_host=5.9.86.151 ansible_ssh_port=501
 
