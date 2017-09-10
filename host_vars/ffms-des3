@@ -1,6 +1,6 @@
-server_id: 157
+server_id: 196
 
-server_besitzer: "FFI"
+server_besitzer: "Simon Wüllhorst / descilla"
 
 vm_config:
   installer:

@@ -42,6 +42,7 @@ network_shemes:
 
 virtual_machines:
 - name: "ffms-des2"
+- name: "ffms-des3"
 - name: "graphite-node-02"
 
 hoster: "hetzner"
