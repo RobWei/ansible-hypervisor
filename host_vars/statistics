@@ -5,13 +5,13 @@ server_besitzer: "FFI"
 vm_config:
   installer:
     name: ubuntu_xenial_x64
-  cpus: 2
-  ram: 1024
+  cpus: 4
+  ram: 4096
   disk: 
-    size: 50
+    size: 100
     bus: "virtio"
-    sparse: "false"
-    format: "raw"
+    sparse: "true"
+    format: "qcow2"
     cache: "none"
   storage_pool: ffms
   started: True
@@ -20,4 +20,4 @@ vm_config:
    - name: "br0"
      type: "bridge"
      model: "virtio"
-  multiqueue: 2 
+  multiqueue: 4
