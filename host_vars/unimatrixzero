@@ -42,8 +42,8 @@ network_shemes:
 
 virtual_machines:
 - name: "bergstr-01"
+- name: "bergstr-map"
 - name: "emscherl-01"
-- name: "emscher-map"
-- name: "berg-map"
-- name: "emscher-service"
+- name: "emscherl-map"
+- name: "emscherl-service"
 hoster: "hetzner"

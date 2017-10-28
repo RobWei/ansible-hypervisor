@@ -20,4 +20,3 @@ vm_config:
    - name: "virbr1"
      type: "bridge"
      model: "virtio"
-

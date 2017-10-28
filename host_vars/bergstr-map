@@ -17,8 +17,5 @@ vm_config:
   started: True
   autostart: True
   network:
-   - name: "br0"
-     setup_name: "virbr1"
+   - name: "virbr1"
      type: "bridge"
-     model: "virtio"
-  multiqueue: 4
