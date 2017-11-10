@@ -43,4 +43,5 @@ network_shemes:
 virtual_machines:
 - name: "automatix"
 - name: "emscherl-02"
+- name: "webserver"
 hoster: "hetzner"
