@@ -22,7 +22,7 @@ bergstr-01              ansible_ssh_host=176.9.38.150           #unimatrixzero  
 bergstr-map		ansible_ssh_host=176.9.38.150		#unimatrixzero		ansible_ssh_port=223
 emscherl-01		ansible_ssh_host=176.9.38.158		#unimatrixzero
 emscherl-map		ansible_ssh_host=176.9.38.156		#unimatrixzero
-emscherl-service	ansible_ssh_host=176.9.38.163		#unimatrixzero
+dnsmaster		ansible_ssh_host=176.9.38.163		#unimatrixzero
 emscherl-02		ansible_ssh_host=46.4.80.131		#voyager
 automatix		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
 webserver		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=223
