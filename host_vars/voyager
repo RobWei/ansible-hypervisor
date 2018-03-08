@@ -44,4 +44,5 @@ virtual_machines:
 - name: "automatix"
 - name: "emscherl-02"
 - name: "webserver"
+- name: "streamer"
 hoster: "hetzner"

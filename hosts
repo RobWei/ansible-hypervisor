@@ -24,5 +24,6 @@ emscherl-01		ansible_ssh_host=176.9.38.158		#unimatrixzero
 emscherl-map		ansible_ssh_host=176.9.38.156		#unimatrixzero
 dnsmaster		ansible_ssh_host=176.9.38.163		#unimatrixzero
 emscherl-02		ansible_ssh_host=46.4.80.131		#voyager
-automatix		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
+automatix		ansible_ssh_host=46.4.80.184		#voyager		ansible_ssh_port=22
 webserver		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=223
+streamer		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
