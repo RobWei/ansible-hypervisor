@@ -1,0 +1,22 @@
+server_id: 86
+
+server_besitzer: "FFI"
+
+vm_config:
+  installer:
+    name: ubuntu_xenial_x64
+  cpus: 2
+  ram: 2048
+  disk: 
+    size: 50
+    bus: "virtio"
+    sparse: "true"
+    format: "qcow2"
+    cache: "none"
+  storage_pool: ffms
+  started: True
+  autostart: True
+  network:
+   - name: "virbr1"
+     type: "bridge"
+     model: "virtio"
