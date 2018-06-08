@@ -28,3 +28,4 @@ automatix		ansible_ssh_host=46.4.80.184		#voyager		ansible_ssh_port=22
 webserver		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=223
 streamer		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
 ansible			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=224
+mumble			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=225

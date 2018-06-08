@@ -46,5 +46,6 @@ virtual_machines:
 - name: "webserver"
 - name: "streamer"
 - name: "ansible"
+- name: "mumble"
 
 hoster: "hetzner"
