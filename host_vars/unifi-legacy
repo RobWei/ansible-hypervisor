@@ -1,12 +1,12 @@
-server_id: 48
+server_id: 88
 
-server_besitzer: "Marius Hellmann / corny456"
+server_besitzer: "FFI"
 
 vm_config:
   installer:
     name: ubuntu_xenial_x64
   cpus: 4
-  ram: 8192
+  ram: 4096
   disk: 
     size: 200
     bus: "virtio"

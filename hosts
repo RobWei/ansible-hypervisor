@@ -29,3 +29,7 @@ webserver		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=223
 streamer		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
 ansible			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=224
 mumble			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=225
+unifi			ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
+unifi-legacy		ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
+passbolt		ansible_ssh_host=46.4.80.186		#voyager
+karte			ansible_ssh_host=46.4.80.190		#voyager

@@ -47,5 +47,9 @@ virtual_machines:
 - name: "streamer"
 - name: "ansible"
 - name: "mumble"
+- name: "unifi"
+- name: "unifi-legacy"
+- name: "karte"
+- name: "passbolt"
 
 hoster: "hetzner"
