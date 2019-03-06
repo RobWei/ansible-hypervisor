@@ -38,8 +38,6 @@ network_shemes:
 
 virtual_machines:
 - name: "des1"
-- name: "statistics"
-- name: "wurmi-test-01"
-- name: "wurmi-test-02"
+- name: "ldap"
 
 hoster: "hetzner"

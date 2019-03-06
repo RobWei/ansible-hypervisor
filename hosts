@@ -33,3 +33,4 @@ unifi			ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
 unifi-legacy		ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
 passbolt		ansible_ssh_host=46.4.80.186		#voyager
 karte			ansible_ssh_host=46.4.80.190		#voyager
+ldap			ansible_ssh_host=5.9.86.151		#deshyper-01		ansible_ssh_port=501
