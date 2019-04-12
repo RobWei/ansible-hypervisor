@@ -1,6 +1,6 @@
 ---
 #Vorbereitung für die Virtualisierung mit libvirt/KVM
-- name: install virtualizations packages
+- name: install virtualizations packages (Ubuntu)
   apt:
     pkg: "{{ item }}"
     update_cache: yes
@@ -12,6 +12,25 @@
     - xauth
     - python-lxml
     - qemu-utils
+  when: ansible_distribution == "Ubuntu"
+
+- name: install virtualizations packages (Debian)
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: installed
+  with_items:
+    - qemu-kvm
+    - libvirt-clients
+    - libvirt-daemon-system
+    - libguestfs-tools
+    - virtinst
+    - libosinfo-bin
+    - virt-manager
+    - xauth
+    - python-lxml
+    - qemu-utils
+  when: ansible_distribution == "Debian"
 
 # Ansible virt_pool docs see here: https://docs.ansible.com/ansible/virt_pool_module.html
 # libvirt storage xml scheme see here: https://libvirt.org/storage.html
