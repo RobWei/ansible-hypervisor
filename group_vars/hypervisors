@@ -12,6 +12,11 @@ virt_installer:
     release: jessie
     net_installer: http://ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
     architecture: amd64
+  debian_stretch_x64:
+    distribution: debian
+    release: stretch
+    net_installer: http://ftp.de.debian.org/debian/dists/stretch/main/installer-amd64/
+    architecture: amd64
   ubuntu_xenial_x64:
     distribution: ubuntu
     release: xenial
