@@ -22,3 +22,8 @@ virt_installer:
     release: xenial
     net_installer: http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/
     architecture: amd64
+  ubuntu_bionic_x64:
+    distribution: ubuntu
+    release: bionic
+    net_installer: http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/
+    architecture: amd64

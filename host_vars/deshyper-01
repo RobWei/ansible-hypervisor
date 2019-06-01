@@ -38,6 +38,6 @@ network_shemes:
 
 virtual_machines:
 - name: "des1"
-- name: "ldap"
+- name: "wiki"
 
 hoster: "hetzner"
