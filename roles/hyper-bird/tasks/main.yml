@@ -1,16 +1,17 @@
 ---
 - name: Add repo key for bird
-  apt_key: keyserver=keyserver.ubuntu.com id=AC0E47584A7A714D
+  apt_key:
+    url: https://bird.network.cz/debian/apt.gpg
 
 - name: Add repo for bird (Debian)
   apt_repository:
-    repo: "deb [trusted=yes] http://bird.network.cz/debian/ {{ ansible_distribution_release }} main"
+    repo: "deb [trusted=yes] http://bird.network.cz/debian/ strech main"
     state: present
   when: ansible_distribution == "Debian"
 
 - name: Add repo for bird (Ubuntu)
   apt_repository:
-    repo: "ppa:cz.nic-labs/bird"
+    repo: "deb http://ppa.launchpad.net/cz.nic-labs/bird/ubuntu bionic main"
     state: present
   when: ansible_distribution == "Ubuntu"
 
