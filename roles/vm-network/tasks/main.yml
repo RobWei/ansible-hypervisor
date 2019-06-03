@@ -1,9 +1,41 @@
 ---
+- name: remove netplan crap
+  apt: 
+    name: netplan
+    state: absent
+    update_cache: yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install ifupdown
+  apt:
+    name: ifupdown
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+  notify:
+    - restart networking
 
 - name: configure /etc/network/interfaces/
   template: src="interfaces.j2" dest="/etc/network/interfaces"
   notify:
     - restart networking
 
+- name: enable really predictable interface names
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX=.*'
+    line: 'GRUB_CMDLINE_LINUX="console=ttyS0 net.ifnames=0 biosdevname=0"'
+  notify:
+    - update grub
+    - reboot
+
 - name: Execute all triggered handlers
   meta: flush_handlers
+
+- name: wait for server to restart
+  local_action:
+     module: wait_for
+       host={{ ansible_ssh_host }}
+       port={{ ansible_ssh_port | default('22') }}
+       delay=20
+       timeout=500
+    

@@ -2,3 +2,10 @@
 ---
 - name: restart networking
   shell: systemctl restart networking
+
+- name: update grub
+  shell: update-grub
+
+- name: reboot
+  reboot:
+    search_paths: ['/lib/molly-guard', '/sbin']
