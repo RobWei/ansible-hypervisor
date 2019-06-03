@@ -7,9 +7,9 @@ WARNING: This file is managed by ansible, don't make changes here - they will be
   <bridge name="{{item.bridge_name}}" />
   <forward mode="nat"/>
 {% if "v4" in item %}
-  <ip address="{{item.v4.network | ipaddr("1") | ipaddr("address")}}" netmask="{{item.v4.network | ipaddr("netmask")}}">
+  <ip address="{{ item.v4.network | ipaddr('next_usable') }}" netmask="{{ item.v4.network | ipaddr("netmask") }}">
     <dhcp>
-      <range start="{{item.v4.network | ipaddr("2") | ipaddr("address")}}" end="{{item.v4.network | ipaddr("-2") | ipaddr("address")}}" />
+      <range start="{{ item.v4.network | next_nth_usable(2) }}" end="{{ item.v4.network | ipaddr('last_usable') }}" />
     </dhcp>
   </ip>
 {% endif %}
