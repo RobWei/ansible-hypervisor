@@ -5,7 +5,7 @@
 
 - name: Add repo for bird (Debian)
   apt_repository:
-    repo: "deb [trusted=yes] http://bird.network.cz/debian/ strech main"
+    repo: "deb [trusted=yes] http://bird.network.cz/debian/ {{ ansible_distribution_release }} main"
     state: present
   when: ansible_distribution == "Debian"
 
