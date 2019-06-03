@@ -1,0 +1,46 @@
+server_id: 20
+
+server_besitzer: "Robin Weiligmann / RobWei"
+
+network:
+  own_v4: 
+    ip_addr: "78.46.85.242"
+    gateway: "78.46.85.225"
+    netmask: "255.255.255.224"
+    pointopoint: "78.46.85.225"
+    type: "static"
+  own_v6: 
+    network: "2a01:4f8:120:1395::2/64"
+    gateway: "fe80::1"
+    type: "static"
+
+storage_shemes:
+- name: ffms
+  location: "/home/libvirt/images/ffms"
+  started: True
+  autostart: True
+- name: private
+  location: "/home/libvirt/images/private"
+  started: True
+  autostart: True
+
+network_shemes:
+- name: ipv4-nat
+  started: True
+  autostart: True
+  type: v4nat
+  bridge_name: virbr1
+  v4:
+    network: 192.168.10.0/24
+    dhcp: True
+- name: host-bridge
+  started: True
+  autostart: True
+  type: bridge
+  bridge_device: br0
+  bridge_name: vnet0
+
+virtual_machines:
+- name: "rowe"
+
+hoster: "hetzner"
