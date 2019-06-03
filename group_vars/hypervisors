@@ -10,7 +10,7 @@ virt_installer:
   debian_jessie_x64:
     distribution: debian
     release: jessie
-    net_installer: http://ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
+    net_installer: http://firmware.ffmsl.de/mirror/ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
     architecture: amd64
   debian_stretch_x64:
     distribution: debian
