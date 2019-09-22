@@ -4,8 +4,10 @@ remue			ansible_ssh_host=144.76.30.226
 unimatrixzero		ansible_ssh_host=176.9.38.150
 voyager			ansible_ssh_host=46.4.80.179
 robweisor-01		ansible_ssh_host=78.46.85.242		#Kein_Zugriff
+tj7-hyper               ansible_ssh_host=176.9.77.90
 
 [managed-vms]
+tj01                    ansible_ssh_host=176.9.176.92           #tj7-hyper
 rowe			ansible_ssh_host=78.46.85.237		#robweisor-01
 des1			ansible_ssh_host=5.9.86.154		#deshyper-01
 wiki			ansible_ssh_host=5.9.86.142		#deshyper-01

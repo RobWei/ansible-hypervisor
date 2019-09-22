@@ -2,6 +2,8 @@ administrators:
   - "descilla"
   - "mpw"
   - "corny"
+  - "robwei"
+  - "wurmi"
 
 admin_contact:
   email: "mail@simon-wuellhorst.de"
