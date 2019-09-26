@@ -19,6 +19,11 @@ virt_installer:
     release: stretch
     net_installer: http://ftp.de.debian.org/debian/dists/stretch/main/installer-amd64/
     architecture: amd64
+  debian_buster_x64:
+    distribution: debian
+    release: buster
+    net_installer: http://ftp.de.debian.org/debian/dists/buster/main/installer-amd64/
+    architecture: amd64
   ubuntu_xenial_x64:
     distribution: ubuntu
     release: xenial
