@@ -29,8 +29,8 @@ d-i console-setup/variantcode string nodeadkeys
 # netcfg will choose an interface that has link if possible. This makes it
 # skip displaying a list if there is more than one interface.
 d-i netcfg/choose_interface select auto
-{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" and virt_installer[hostvars[item.name].vm_config.installer.name].release == "xenial" %}
-#--- re-enabling eth0 interface names for Ubuntu 16.04 LTS
+{% if virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "debian" and virt_installer[hostvars[item.name].vm_config.installer.name].release == "buster" or virt_installer[hostvars[item.name].vm_config.installer.name].distribution == "ubuntu" and virt_installer[hostvars[item.name].vm_config.installer.name].release == "xenial" %}
+#--- re-enabling eth0 interface names for Ubuntu 16.04 LTS or Debian 10 (Buster)
 d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0 console=ttyS0
 {% else %}
 d-i debian-installer/add-kernel-opts string console=ttyS0
