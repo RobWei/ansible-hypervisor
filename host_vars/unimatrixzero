@@ -43,7 +43,7 @@ network_shemes:
 virtual_machines:
 - name: "bergstr-01"
 - name: "bergstr-map"
-- name: "emscherl-01"
+- name: "projekt"
 - name: "emscherl-map"
 - name: "dnsmaster"
 hoster: "hetzner"

@@ -1,17 +1,17 @@
 server_id: 72
 
-server_besitzer: "Freifunk Emscherland"
+server_besitzer: "Freifunk Münsterland"
 
 vm_config:
   installer:
-    name: debian_jessie_x64
-  cpus: 2
-  ram: 1536
+    name: ubuntu_bionic_x64
+  cpus: 4
+  ram: 4096
   disk: 
     size: 50
     bus: "virtio"
     sparse: "false"
-    format: "raw"
+    format: "qcow2"
     cache: "none"
   storage_pool: ffms
   started: True
@@ -20,4 +20,4 @@ vm_config:
    - name: "br0"
      type: "bridge"
      model: "virtio"
-  multiqueue: 2
+  multiqueue: 4
