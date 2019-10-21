@@ -1,13 +1,5 @@
 administrators:
-  - "parad0x"
-  - "void"
-  - "kgbvax"
-  - "fanlin"
-  - "fungur"
-  - "descilla"
-  - "mpw"
-  - "corny"
   - "robwei"
 
 admin_contact:
-  email: "mail@simon-wuellhorst.de"
+  email: "admin@robwei.me"
