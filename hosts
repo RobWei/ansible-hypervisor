@@ -1,34 +1,11 @@
 [hypervisors]
-deshyper-01		ansible_ssh_host=5.9.86.151
-remue			ansible_ssh_host=144.76.30.226
-unimatrixzero		ansible_ssh_host=176.9.38.150
-voyager			ansible_ssh_host=46.4.80.179
-robweisor-01		ansible_ssh_host=78.46.85.242		#Kein_Zugriff
-tj7-hyper               ansible_ssh_host=176.9.77.90
+robweisor-01		ansible_ssh_host=78.46.85.242
 
 [managed-vms]
-tj01                    ansible_ssh_host=176.9.176.92           #tj7-hyper
 rowe			ansible_ssh_host=78.46.85.237		#robweisor-01
-rowe-test               ansible_ssh_host=78.46.85.242           #robweisor-01
-des1			ansible_ssh_host=5.9.86.154		#deshyper-01
-wiki			ansible_ssh_host=5.9.86.142		#deshyper-01
-forum			ansible_ssh_host=148.251.208.171	#remue
-remue-01		ansible_ssh_host=148.251.208.175	#remue
-remue-09		ansible_ssh_host=148.251.208.170	#remue
-mail			ansible_ssh_host=148.251.208.169	#remue
-icinga			ansible_ssh_host=148.251.208.173	#remue
-bergstr-01              ansible_ssh_host=176.9.38.150           #unimatrixzero          ansible_ssh_port=222
-bergstr-map		ansible_ssh_host=176.9.38.150		#unimatrixzero		ansible_ssh_port=223
-projekt			ansible_ssh_host=176.9.38.158		#unimatrixzero
-emscherl-map		ansible_ssh_host=176.9.38.156		#unimatrixzero
-dnsmaster		ansible_ssh_host=176.9.38.163		#unimatrixzero
-emscherl-02		ansible_ssh_host=46.4.80.131		#voyager
-automatix		ansible_ssh_host=46.4.80.184		#voyager		ansible_ssh_port=22
-webserver		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=223
-streamer		ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=222
-ansible			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=224
-mumble			ansible_ssh_host=46.4.80.179		#voyager		ansible_ssh_port=225
-unifi			ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
-unifi-legacy		ansible_ssh_host=46.4.80.179		#voyager		#Freifunk only!
-karte			ansible_ssh_host=46.4.80.190		#voyager
-ldap			ansible_ssh_host=5.9.86.151		#deshyper-01		ansible_ssh_port=501
+weiligmannit01          ansible_ssh_host=78.46.85.233		#robweisor-01
+prowe01                 ansible_ssh_host=78.46.85.235           #robweisor-01
+prowe02                 ansible_ssh_host=78.46.85.226           #robweisor-01
+
+[common]
+mail                    ansible_ssh_host=78.46.175.133          #HetznerCloud
