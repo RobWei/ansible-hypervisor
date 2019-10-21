@@ -1,33 +1,14 @@
 administrators:
-  - "descilla"
-  - "mpw"
-  - "corny"
   - "robwei"
-  - "wurmi"
 
 admin_contact:
-  email: "mail@simon-wuellhorst.de"
+  email: "admin@robwei.me"
 
 virt_installer:
-  debian_jessie_x64:
-    distribution: debian
-    release: jessie
-    net_installer: http://firmware.ffmsl.de/mirror/ftp.de.debian.org/debian/dists/jessie/main/installer-amd64/
-    architecture: amd64
-  debian_stretch_x64:
-    distribution: debian
-    release: stretch
-    net_installer: http://ftp.de.debian.org/debian/dists/stretch/main/installer-amd64/
-    architecture: amd64
   debian_buster_x64:
     distribution: debian
     release: buster
     net_installer: http://ftp.de.debian.org/debian/dists/buster/main/installer-amd64/
-    architecture: amd64
-  ubuntu_xenial_x64:
-    distribution: ubuntu
-    release: xenial
-    net_installer: http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/
     architecture: amd64
   ubuntu_bionic_x64:
     distribution: ubuntu
