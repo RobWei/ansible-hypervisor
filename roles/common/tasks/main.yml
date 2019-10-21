@@ -60,25 +60,20 @@
     - dnsutils
     - host
     - apt-transport-https
-#    - etckeeper
-#    - apticron
     - dwdiff
     - git
     - molly-guard
     - iperf
     - traceroute
-#    - postfix
-#    - logwatch
     - ethtool
     - irqbalance
-#    - netperf #nonfree
 
-- name: install common packages (Debian specific)
+- name: install common packages (Debian != Buster specific)
   apt:
     pkg: "{{ item }}"
     update_cache: yes
     state: installed
-  when: ansible_distribution == "Debian"
+  when: ansible_distribution == "Debian" and ansible_distribution_release != "buster"
   with_items:
     - chkconfig
 
@@ -88,10 +83,6 @@
     key: "{{ lookup('file', 'keyfiles/' + item + '.pub') }}"
   with_items: "{{ administrators }}"
   when: administrators
-
-#- name: Configure apticron
-#  template: src=apticron.conf.j2 dest=/etc/apticron/apticron.conf
-#  when: "'admin_contact' in hostvars[inventory_hostname]"
 
 - locale_gen: name=de_DE.UTF-8 state=present
 
@@ -125,12 +116,6 @@
   lineinfile: dest=/etc/ssh/sshd_config regexp="^#?ChallengeResponseAuthentication " line="ChallengeResponseAuthentication no"
   notify:
     - reload sshd
-
-#- name: Let postfix only listen on localhost
-#  lineinfile: dest=/etc/postfix/main.cf regexp="^#?inet_interfaces " line="inet_interfaces = 127.0.0.1 [::1]"
-#  notify:
-#    - restart postfix
-
 
 - name: remove unneeded rpc/nfc related packages
   apt:
