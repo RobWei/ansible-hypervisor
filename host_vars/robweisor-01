@@ -42,5 +42,8 @@ network_shemes:
 
 virtual_machines:
 - name: "rowe"
+- name: "weiligmannit01"
+- name: "prowe01"
+- name: "prowe02"
 
-hoster: "hetzner"
+hoster: "Hetzner"
