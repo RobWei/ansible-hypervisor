@@ -1,4 +1,4 @@
-server_id: 21
+server_id: 11
 
 server_besitzer: "Robin Weiligmann / RobWei"
 
@@ -13,7 +13,7 @@ vm_config:
     sparse: "false"
     format: "raw"
     cache: "none"
-  storage_pool: ffms
+  storage_pool: private
   started: True
   autostart: True
   network:

@@ -3,9 +3,11 @@ robweisor-01		ansible_ssh_host=78.46.85.242
 
 [managed-vms]
 rowe			ansible_ssh_host=78.46.85.237		#robweisor-01
-weiligmannit01          ansible_ssh_host=78.46.85.233		#robweisor-01
 prowe01                 ansible_ssh_host=78.46.85.235           #robweisor-01
-prowe02                 ansible_ssh_host=78.46.85.226           #robweisor-01
+vault                   ansible_ssh_host=78.46.85.226           #robweisor-01
 
 [common]
 mail                    ansible_ssh_host=78.46.175.133          #HetznerCloud
+
+[as-router]
+robix01                 ansible_ssh_host=45.152.127.170         #vserver.site

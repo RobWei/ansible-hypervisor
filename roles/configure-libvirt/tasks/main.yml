@@ -4,7 +4,7 @@
   apt:
     pkg: "{{ item }}"
     update_cache: yes
-    state: installed
+    state: present
   with_items:
     - qemu-kvm
     - libvirt-bin
@@ -14,22 +14,13 @@
     - qemu-utils
   when: ansible_distribution == "Ubuntu"
 
-- name: install virtualizations packages (Debian)
+
+- name: install virtualization packages (Debian)
   apt:
-    pkg: "{{ item }}"
+    name: ["qemu-kvm", "libvirt-clients", "libvirt-daemon-system", "python-libvirt", "python-lxml", "virt-manager", "dnsmasq"]
+    state: latest
+    install_recommends: no
     update_cache: yes
-    state: installed
-  with_items:
-    - qemu-kvm
-    - libvirt-clients
-    - libvirt-daemon-system
-    - libguestfs-tools
-    - virtinst
-    - libosinfo-bin
-    - virt-manager
-    - xauth
-    - python-lxml
-    - qemu-utils
   when: ansible_distribution == "Debian"
 
 # Ansible virt_pool docs see here: https://docs.ansible.com/ansible/virt_pool_module.html

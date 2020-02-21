@@ -1,20 +1,9 @@
 ---
-- name: Add repo key for bird (Debian)
-  apt_key:
-    url: https://bird.network.cz/debian/apt.gpg
-  when: ansible_distribution == "Debian"
-
-- name: Add repo for bird (Debian)
-  apt_repository:
-    repo: "deb [trusted=yes] http://bird.network.cz/debian/ {{ ansible_distribution_release }} main"
-    state: present
-  when: ansible_distribution == "Debian"
-
 - name: Install bird
   apt:
     pkg: "{{item}}"
     update_cache: yes
-    state: installed
+    state: present
   with_items:
     - bird
   register: apt_bird

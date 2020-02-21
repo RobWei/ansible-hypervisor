@@ -42,8 +42,8 @@ network_shemes:
 
 virtual_machines:
 - name: "rowe"
-- name: "weiligmannit01"
 - name: "prowe01"
-- name: "prowe02"
+- name: "vault"
+- name: "gameserver"
 
 hoster: "Hetzner"

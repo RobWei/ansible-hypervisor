@@ -6,7 +6,7 @@
   apt:
     pkg: "bridge-utils"
     update_cache: yes
-    state: installed
+    state: present
 
 - name: IPv4 Paketweiterleitung aktivieren
   sysctl: name="net.ipv4.conf.all.forwarding" value=1 sysctl_set=yes state=present reload=yes
