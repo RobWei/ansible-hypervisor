@@ -1,0 +1,5 @@
+auto lo
+iface lo inet loopback
+        up ip -6 a a {{ router.ipv6.address }}/128 dev lo
+        up ip -6 rule add from {{ router.ipv6.net }} table 42
+        up ip -6 rule add to {{ router.ipv6.net }} table 42

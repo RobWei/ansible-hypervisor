@@ -1,0 +1,102 @@
+- name: Install all needed and usefull packages
+  package:
+    name:
+      - bird
+      - mtr-tiny
+      - vnstat
+      - ifupdown2
+    state: present
+
+- name: Remove ifupdown1 packages
+  package:
+    name: ifupdown
+    state: absent
+
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+#- name: Enable IPv6 forwarding
+#  sysctl:
+#    name: net.ipv6.conf.all.forwarding
+#    value: '1'
+#    sysctl_set: yes
+#    state: present
+#    reload: yes
+
+- name: Create directorys
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/etc/bird/functions_v4"
+    - "/etc/bird/functions_v6"
+    - "/etc/bird/peers_v4"
+    - "/etc/bird/peers_v6"
+
+- name: Prepare config for bird
+  template:
+    src: bird.conf.j2
+    dest: /etc/bird/bird.conf
+
+- name: Create function config for IPv6
+  template:
+    src: v4_functions.conf.j2
+    dest: /etc/bird/functions_v4/v4_functions.conf
+
+- name: Prepare config for bird6
+  template:
+    src: bird6.conf.j2
+    dest: /etc/bird/bird6.conf
+  
+- name: Create function config for IPv6
+  template:
+    src: v6_functions.conf.j2
+    dest: /etc/bird/functions_v6/v6_functions.conf
+
+- name: Create BGPv4 Peers
+  template:
+    src: "peer.conf.j2"
+    dest: "/etc/bird/peers_v4/{{ item.name|lower }}.conf"
+  with_items: "{{ peers.v4 }}"
+
+- name: Create BGPv6 Peers
+  template:
+    src: "peer.conf.j2"
+    dest: "/etc/bird/peers_v6/{{ item.name|lower }}.conf"
+  with_items: "{{ peers.v6 }}"
+
+- name: Configure loopback-Interface
+  template:
+    src: loopback.conf.j2
+    dest: /etc/network/interfaces.d/10-lo.cfg
+
+- name: Configure primary-interfaces
+  template:
+    src: ifupdown2-if.conf.j2
+    dest: /etc/network/interfaces
+
+- name: Configure IX-interfaces
+  template:
+    src: ifupdown2-ix-if.conf.j2
+    dest: /etc/network/interfaces.d/00-ix.cfg
+
+- name: Copy BGP Script
+  copy: 
+    src: bgp.sh
+    dest: /usr/bin/bgp
+    mode: u=rwx
+
+- name: BIRD Configure
+  shell: birdc c
+
+- name: BIRD6 Configure
+  shell: birdc6 c
+
+
+
+

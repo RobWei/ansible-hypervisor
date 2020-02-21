@@ -1,0 +1,40 @@
+router id {{ ansible_default_ipv4.address }};
+
+include "functions_v4/*.conf";
+
+protocol kernel {
+        kernel table 42;
+        scan time 45;
+        device routes;
+        import none;
+        export filter {
+                if net ~ [0.0.0.0/0] then reject;
+{% if router.ipv4.address is defined %}
+		krt_prefsrc = {{ router.ipv4.address }};
+{% endif %}
+                accept;
+        };
+}
+
+protocol device {
+        scan time 15;
+}
+
+protocol direct {
+        import filter {
+                accept;
+        };
+}
+
+protocol static 'static_default' {
+        route 0.0.0.0/0 reject;
+}
+
+protocol static 'ffms_net' {
+{% if router.ipv4.net is defined %}
+        route {{ router.ipv4.net }} reject;
+{% endif %}
+}
+
+include "peers_v4/*.conf";
+

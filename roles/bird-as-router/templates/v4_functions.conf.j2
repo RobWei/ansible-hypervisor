@@ -1,0 +1,10 @@
+filter bgp_in {
+        #if net = 8.8.8.0/24 then reject; #Muster regel um einzelne Routen weg zu filtern.
+        accept;
+}
+
+filter bgp_out {
+        #if net = 45.154.111.0/24 then accept;
+        reject;
+}
+

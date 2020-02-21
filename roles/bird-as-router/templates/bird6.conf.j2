@@ -1,0 +1,41 @@
+router id {{ ansible_default_ipv4.address }};
+
+include "functions_v6/*.conf";
+
+protocol kernel {
+        kernel table 42;
+        scan time 45;
+        device routes;
+        import none;
+        export filter {
+                if net ~ [::/0] then reject;
+{% if router.ipv6.address is defined %}
+                krt_prefsrc = {{ router.ipv6.address }};
+{% endif %}
+                accept;
+        };
+}
+
+protocol device {
+        scan time 10;
+}
+
+protocol direct {
+        import filter {
+                accept;
+        };
+}
+
+protocol static 'static_default' {
+        route ::/0 reject;
+}
+
+protocol static 'ffms_net' {
+{% if router.ipv6.net is defined %}
+	route {{ router.ipv6.net }} reject;
+{% endif %}
+
+}
+
+include "peers_v6/*.conf";
+
