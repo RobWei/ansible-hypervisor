@@ -1,8 +1,0 @@
-protocol bgp {{ item.name }} {
-        local as {{ as_number }};
-        source address {{ item.source_address }};
-        neighbor {{ item.neighbour_address }} as {{ item.as_number }};
-        import filter bgp_in;
-        export filter bgp_out;
-};
-

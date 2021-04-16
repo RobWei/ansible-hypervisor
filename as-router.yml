@@ -1,7 +1,0 @@
----
- - hosts: all
-   remote_user: root
-   roles:
-    - { role: hostname, tags: "hostname"}
-    - { role: common, tags: "common"}
-    - { role: bird-as-router, tags: "bird-as-router"}
